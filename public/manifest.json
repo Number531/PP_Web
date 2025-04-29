@@ -1,0 +1,23 @@
+{
+  "name": "PSQRD - Enterprise AI Solutions",
+  "short_name": "PSQRD",
+  "description": "Hallucination-free AI with guaranteed accuracy for enterprise applications",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#a855f7",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

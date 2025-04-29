@@ -1,0 +1,16 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow crawling of authentication pages
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+
+# Disallow crawling of private areas
+Disallow: /chat
+Disallow: /dashboard
+Disallow: /account
+
+# Sitemap location
+Sitemap: https://psqrd.ai/sitemap.xml

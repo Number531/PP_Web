@@ -1,0 +1,383 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this to your globals.css */
+@layer components {
+  .typing-dot {
+    @apply w-2 h-2 rounded-full bg-white/50 animate-pulse;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 270 95% 65%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 270 95% 65%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 270 95% 65%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 270 95% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Premium typography system */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-semibold tracking-tight;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  h3 {
+    @apply text-2xl font-medium tracking-tight;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  h4 {
+    @apply text-xl font-medium tracking-tight;
+    line-height: 1.4;
+  }
+
+  p {
+    @apply leading-relaxed text-base;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    @apply text-lg md:text-xl font-light tracking-wide;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+
+  .overline {
+    @apply uppercase text-xs font-medium tracking-widest;
+    letter-spacing: 0.1em;
+  }
+
+  .caption {
+    @apply text-sm text-muted-foreground;
+    letter-spacing: 0.01em;
+  }
+
+  .display {
+    @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .quote {
+    @apply text-xl md:text-2xl font-light italic;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  .monospace {
+    @apply font-mono text-sm;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Premium text selection */
+::selection {
+  background-color: rgba(168, 85, 247, 0.3);
+  color: white;
+}
+
+/* Custom scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 90, 213, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 90, 213, 0.7);
+}
+
+/* Premium text utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500;
+  }
+
+  .text-gradient-subtle {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600;
+  }
+
+  .text-gradient-bright {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-500 to-purple-600;
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-md {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+
+  .text-premium {
+    @apply font-medium tracking-tight;
+    letter-spacing: -0.01em;
+  }
+
+  /* New enhanced utilities */
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2), 0 0 40px rgba(168, 85, 247, 0.1);
+  }
+
+  .bg-glass {
+    @apply bg-white/5 backdrop-blur-md;
+  }
+
+  .bg-glass-dark {
+    @apply bg-black/40 backdrop-blur-md;
+  }
+
+  .bg-glass-purple {
+    @apply bg-purple-950/20 backdrop-blur-md;
+  }
+
+  .border-glass {
+    @apply border border-white/10;
+  }
+
+  .border-glass-purple {
+    @apply border border-purple-500/20;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Premium animations */
+@keyframes subtle-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Add this to your existing globals.css */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-text-in {
+  animation: subtle-fade-in 0.8s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(168, 85, 247, 0.8) 0%,
+    rgba(192, 132, 252, 1) 20%,
+    rgba(168, 85, 247, 0.8) 40%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 3s linear infinite;
+}
+
+/* Premium card and container styles */
+.premium-card {
+  @apply bg-black/40 border border-purple-500/20 rounded-lg p-6 backdrop-blur-sm;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(168, 85, 247, 0.1);
+}
+
+.premium-container {
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Premium button styles */
+.btn-premium {
+  @apply bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-all duration-300;
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3);
+}
+
+.btn-premium:hover {
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-premium:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 5px rgba(168, 85, 247, 0.2);
+}
+
+/* New premium button variants */
+.btn-outline-premium {
+  @apply border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 px-6 py-3 rounded-md font-medium transition-all duration-300;
+}
+
+.btn-outline-premium:hover {
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+}
+
+.btn-ghost-premium {
+  @apply text-purple-300 hover:text-purple-200 px-6 py-3 rounded-md font-medium transition-all duration-300;
+}
+
+.btn-ghost-premium:hover {
+  background-color: rgba(168, 85, 247, 0.05);
+}
+
+/* New premium components */
+.premium-divider {
+  @apply w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent my-8;
+}
+
+.premium-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/10 text-purple-300 border border-purple-500/20;
+}
+
+.premium-tooltip {
+  @apply absolute z-10 px-3 py-2 text-sm bg-black/80 text-white rounded shadow-lg border border-purple-500/20 backdrop-blur-sm;
+  max-width: 200px;
+}
+
+/* Scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thumb-white\/10::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}

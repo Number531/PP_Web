@@ -1,0 +1,164 @@
+import { NextResponse } from "next/server"
+import nodemailer from "nodemailer"
+import { getMicrosoftTokens } from "@/lib/auth/microsoft-oauth"
+
+/**
+ * Create an email transporter with Outlook/Office 365 integration
+ * Supports both OAuth2 (preferred) and basic authentication
+ */
+async function createTransporter() {
+  // Define types for nodemailer configuration
+  type AuthConfig = {
+    user: string;
+    pass?: string;
+    type?: string;
+    clientId?: string;
+    clientSecret?: string;
+    refreshToken?: string;
+    accessToken?: string;
+  };
+
+  type TransportConfig = {
+    host: string;
+    port: number;
+    secure: boolean;
+    auth: AuthConfig;
+    tls: {
+      ciphers: string;
+      rejectUnauthorized: boolean;
+    };
+  };
+
+  // Basic configuration for Outlook/Office 365
+  const transportConfig: TransportConfig = {
+    host: process.env.SMTP_HOST || "smtp.office365.com",
+    port: Number.parseInt(process.env.SMTP_PORT || "587"),
+    secure: process.env.SMTP_SECURE === "true",
+    auth: {
+      user: process.env.SMTP_USER || "your-email@example.com",
+      pass: process.env.SMTP_PASSWORD || "your-password"
+    },
+    tls: {
+      ciphers: 'SSLv3',
+      rejectUnauthorized: process.env.NODE_ENV === "production" // Only disable in development
+    }
+  };
+
+  // Check if we're using OAuth2 authentication
+  const useOAuth = process.env.OAUTH_CLIENT_ID && 
+                   process.env.OAUTH_CLIENT_SECRET && 
+                   process.env.MICROSOFT_TENANT_ID;
+  
+  if (useOAuth) {
+    try {
+      // Get fresh tokens using our OAuth utility
+      const { accessToken, refreshToken } = await getMicrosoftTokens();
+      
+      // Use OAuth2 authentication
+      transportConfig.auth = {
+        type: 'OAuth2',
+        user: process.env.SMTP_USER || "your-email@example.com",
+        clientId: process.env.OAUTH_CLIENT_ID!,
+        clientSecret: process.env.OAUTH_CLIENT_SECRET!,
+        refreshToken,
+        accessToken
+      };
+      
+      console.log("Using OAuth2 authentication for email");
+    } catch (error) {
+      console.error("OAuth2 authentication failed, falling back to password auth:", error);
+      // We'll fall back to password authentication
+    }
+  }
+
+  return nodemailer.createTransport(transportConfig);
+}
+
+// We'll create the transporter when needed to ensure fresh tokens
+
+// The email addresses that will receive contact form submissions
+const COMPANY_EMAILS: Record<string, string> = {
+  "Demo Request": process.env.SALES_EMAIL || "sales@psqrd.ai",
+  "Product Inquiry": process.env.PRODUCT_EMAIL || "product@psqrd.ai",
+  Partnership: process.env.PARTNERSHIP_EMAIL || "partnerships@psqrd.ai",
+  Support: process.env.SUPPORT_EMAIL || "support@psqrd.ai",
+  Careers: process.env.CAREERS_EMAIL || "careers@psqrd.ai",
+  Other: process.env.GENERAL_EMAIL || "info@psqrd.ai",
+}
+
+export async function POST(request: Request) {
+  try {
+    // Create a fresh transporter with the latest tokens
+    const transporter = await createTransporter();
+    
+    // Parse the request body
+    const { name, email, company, subject, message } = await request.json()
+
+    // Validate required fields
+    if (!name || !email || !subject || !message) {
+      return NextResponse.json({ message: "Missing required fields" }, { status: 400 })
+    }
+
+    // Determine recipient based on subject
+    const recipient = COMPANY_EMAILS[subject] || COMPANY_EMAILS["Other"]
+
+    // Send email to company
+    await transporter.sendMail({
+      from: `"Website Contact Form" <${process.env.FROM_EMAIL || "noreply@yourcompany.com"}>`,
+      to: recipient,
+      replyTo: email,
+      subject: `New Contact Form Submission: ${subject}`,
+      text: `
+Name: ${name}
+Email: ${email}
+Company: ${company || "Not provided"}
+Subject: ${subject}
+
+Message:
+${message}
+      `,
+      html: `
+<h2>New Contact Form Submission</h2>
+<p><strong>Name:</strong> ${name}</p>
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Company:</strong> ${company || "Not provided"}</p>
+<p><strong>Subject:</strong> ${subject}</p>
+<h3>Message:</h3>
+<p>${message.replace(/\n/g, "<br>")}</p>
+      `,
+    })
+
+    // Send confirmation email to user
+    await transporter.sendMail({
+      from: `"Your Company" <${process.env.FROM_EMAIL || "noreply@yourcompany.com"}>`,
+      to: email,
+      subject: "Thank you for contacting us",
+      text: `
+Dear ${name},
+
+Thank you for reaching out to us. We have received your message and will get back to you shortly.
+
+Your message details:
+Subject: ${subject}
+Message: ${message}
+
+Best regards,
+Your Company Team
+      `,
+      html: `
+<h2>Thank you for contacting us</h2>
+<p>Dear ${name},</p>
+<p>Thank you for reaching out to us. We have received your message and will get back to you shortly.</p>
+<h3>Your message details:</h3>
+<p><strong>Subject:</strong> ${subject}</p>
+<p><strong>Message:</strong> ${message.replace(/\n/g, "<br>")}</p>
+<p>Best regards,<br>Your Company Team</p>
+      `,
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error("Contact form error:", error)
+    return NextResponse.json({ message: "Failed to send message" }, { status: 500 })
+  }
+}
