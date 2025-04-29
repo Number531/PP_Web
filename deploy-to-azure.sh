@@ -8,7 +8,7 @@ RESOURCE_GROUP="psqrd-resource-group"
 LOCATION="eastus2"
 APP_NAME="psqrd-hollow-sphere"
 GITHUB_REPO="https://github.com/Number531/P2_FrontEnd"
-GITHUB_BRANCH="main"
+GITHUB_BRANCH="azure-deployment"
 CUSTOM_DOMAIN="psqrd.ai"
 
 # Colors for output
