@@ -16,6 +16,7 @@ async function createTransporter() {
   const graphTransport = {
     name: 'microsoft-graph',
     version: '1.0.0',
+    auth: { type: 'oauth2' },
     send: async (mail: any, callback: any) => {
       try {
         const message = mail.data.message || {};
@@ -56,6 +57,11 @@ async function createTransporter() {
         
         if (!response.ok) {
           const errorText = await response.text();
+          console.error('Graph API Error Response:', {
+            status: response.status,
+            statusText: response.statusText,
+            body: errorText
+          });
           throw new Error(`Microsoft Graph API error: ${response.status} ${errorText}`);
         }
         
