@@ -28,24 +28,16 @@ export async function getMicrosoftTokens(): Promise<{
   // Check if we have a valid cached token
   const now = Date.now();
   if (tokenCache && tokenCache.expiresAt > now + 60000) {
+    console.log('Using cached token');
     return {
       accessToken: tokenCache.accessToken,
       refreshToken: tokenCache.refreshToken,
     };
   }
 
-  // If we have a refresh token, try to use it
-  if (tokenCache?.refreshToken) {
-    try {
-      const newTokens = await refreshTokens(tokenCache.refreshToken);
-      return newTokens;
-    } catch (error) {
-      console.error('Error refreshing tokens:', error);
-      // Fall through to getting new tokens
-    }
-  }
-
-  // Get new tokens using client credentials
+  // Get new tokens using client credentials flow
+  // This is simpler and more reliable for server-to-server auth
+  console.log('No valid cached token, getting new token');
   return getNewTokens();
 }
 
@@ -65,6 +57,7 @@ async function getNewTokens(): Promise<{
   }
 
   try {
+    console.log('Getting new token using client credentials flow');
     const response = await axios.post<TokenResponse>(
       `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
       new URLSearchParams({
@@ -80,19 +73,20 @@ async function getNewTokens(): Promise<{
       }
     );
 
+    console.log('Successfully obtained access token via client credentials');
     const expiresAt = Date.now() + response.data.expires_in * 1000;
     
     // Store in cache
     tokenCache = {
       accessToken: response.data.access_token,
-      // Note: client_credentials flow doesn't provide a refresh token
-      refreshToken: process.env.OAUTH_REFRESH_TOKEN || '',
+      // Client credentials flow doesn't need a refresh token
+      refreshToken: '', // Empty string instead of using OAUTH_REFRESH_TOKEN
       expiresAt,
     };
 
     return {
       accessToken: response.data.access_token,
-      refreshToken: tokenCache.refreshToken,
+      refreshToken: '',
     };
   } catch (error) {
     console.error('Error getting Microsoft tokens:', error);
