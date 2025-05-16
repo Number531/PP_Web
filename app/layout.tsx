@@ -5,6 +5,15 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "./context/auth-context"
 import { generateEnhancedSEO } from "./components/SEOMetadata"
 import { SEOStructuredData } from "./components/SEOStructuredData"
+import { ProductSchema } from "./components/ProductSchema"
+import { FAQSchema } from "./components/FAQSchema"
+import { ImageOptimizer } from "./components/ImageOptimizer"
+import { BreadcrumbSchema } from "./components/BreadcrumbSchema"
+import { SEOSemanticEnhancer } from "./components/SEOSemanticEnhancer"
+import { ContentOptimizer } from "./components/ContentOptimizer"
+import { EntityOptimizer } from "./components/EntityOptimizer"
+import { ContentGapAnalyzer } from "./components/ContentGapAnalyzer"
+import { UserIntentOptimizer } from "./components/UserIntentOptimizer"
 import { Suspense } from "react"
 import { ErrorBoundary } from "./components/ErrorBoundary"
 import { CookieConsent } from "./components/CookieConsent"
@@ -63,23 +72,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
                 {/* Persistent header that doesn't reload during page transitions */}
                 <PersistentHeader />
+                <BreadcrumbSchema />
                 <Suspense fallback={null}>{children}</Suspense>
                 <CookieConsent />
                 {process.env.NODE_ENV !== "production" && <ResponsiveTester />}
                 <WebGLErrorHandler />
                 {/* SEO Components */}
-                <SEOPerformanceOptimizer />
-                <PerformanceMonitoring />
-                <CoreWebVitalsMonitor />
+                {/* <SEOPerformanceOptimizer /> */}
+                {/* Core Web Vitals monitoring temporarily hidden */}
+                {/* <PerformanceMonitoring />
+                <CoreWebVitalsMonitor /> */}
                 <SEOStructuredData />
+                <ProductSchema />
+                <FAQSchema />
+                <ImageOptimizer />
+                <SEOSemanticEnhancer />
+                <ContentOptimizer />
+                <EntityOptimizer />
+                <UserIntentOptimizer />
+                {process.env.NODE_ENV !== "production" && <ContentGapAnalyzer />}
                 {process.env.NODE_ENV !== "production" && <SEOAuditTool />}
                 
-                {/* New SEO Performance Monitor - only shows debug UI in development */}
-                <SEOPerformanceMonitor 
+                {/* SEO Performance Monitor temporarily hidden */}
+                {/* <SEOPerformanceMonitor 
                   enableInProduction={true}
                   sendToAnalytics={process.env.NODE_ENV === "production"}
                   showDebugInfo={process.env.NODE_ENV !== "production"}
-                />
+                /> */}
                 
                 {/* Ensure canonical URLs are properly set */}
                 <SEOCanonicalComponent url={siteConfig.url} />

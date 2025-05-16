@@ -24,12 +24,12 @@ export function PlatformSolution() {
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto"
           >
             <h3 className="text-2xl font-bold mb-4">A Robust Solution for Trustworthy AI</h3>
             <p className="text-white/80 text-lg mb-6 leading-relaxed">
@@ -50,23 +50,6 @@ export function PlatformSolution() {
               </p>
             </div>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-lg overflow-hidden"
-          >
-            <Image
-              src="/placeholder.svg?height=400&width=600"
-              alt="PSQRD Platform Visualization"
-              width={600}
-              height={400}
-              className="w-full h-auto"
-            />
-          </motion.div>
-        </div>
       </div>
     </section>
   )

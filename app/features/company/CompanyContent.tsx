@@ -8,6 +8,17 @@ import { Suspense } from "react"
 import { LinkComponent } from "@/app/components/LinkComponent"
 import { LoadingPlaceholder } from "@/app/components/ui/LoadingPlaceholder"
 
+// Import new content sections to address content gaps
+import { TechnicalApproachSection } from "@/app/components/TechnicalApproachSection"
+import { UseCasesSection } from "@/app/components/UseCasesSection"
+import { ROISection } from "@/app/components/ROISection"
+import { CompetitiveAdvantageSection } from "@/app/components/CompetitiveAdvantageSection"
+import { FactualConsistencySection } from "@/app/components/FactualConsistencySection"
+import { SourceVerificationSection } from "@/app/components/SourceVerificationSection"
+import { InformationIntegritySection } from "@/app/components/InformationIntegritySection"
+import { ImplementationSection } from "@/app/components/ImplementationSection"
+import { AIHallucinationsSection } from "@/app/components/AIHallucinationsSection"
+
 // Dynamically import UI components
 const GlassCard = dynamic(() => import("../ui/GlassCard").then((mod) => ({ default: mod.GlassCard })), {
   ssr: true,
@@ -247,6 +258,43 @@ export function CompanyContent({ isVisible }: CompanyContentProps) {
               </Suspense>
             </motion.div>
           </ParallaxSection>
+        </Suspense>
+
+        {/* Add new content sections to address content gaps */}
+        <Suspense fallback={<LoadingPlaceholder text="Loading AI hallucinations information..." />}>
+          <AIHallucinationsSection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading factual consistency information..." />}>
+          <FactualConsistencySection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading source verification information..." />}>
+          <SourceVerificationSection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading information integrity details..." />}>
+          <InformationIntegritySection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading technical approach..." />}>
+          <TechnicalApproachSection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading use cases..." />}>
+          <UseCasesSection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading implementation details..." />}>
+          <ImplementationSection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading ROI information..." />}>
+          <ROISection />
+        </Suspense>
+
+        <Suspense fallback={<LoadingPlaceholder text="Loading competitive advantage..." />}>
+          <CompetitiveAdvantageSection />
         </Suspense>
       </motion.div>
     </div>

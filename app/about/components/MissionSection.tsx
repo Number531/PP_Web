@@ -82,7 +82,7 @@ export function MissionSection() {
                 "The true potential of AI will only be realized when people can trust it implicitly. That's the future
                 we're building at PSQRD."
               </blockquote>
-              <p className="text-right mt-4 text-purple-300 font-medium">— Dr. Elena Chen, Founder & CEO</p>
+              <p className="text-right mt-4 text-purple-300 font-medium" data-component-name="MissionSection">— Edwin Gordon, Founder & CEO</p>
             </div>
           </motion.div>
         </div>

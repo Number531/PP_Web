@@ -3,16 +3,20 @@ export const siteConfig = {
   name: "PSQRD",
   url: "https://psqrd.ai",
   ogImage: "https://psqrd.ai/og-image.jpg",
-  description: "Hallucination-free AI with guaranteed accuracy for enterprise applications.",
+  description: "The first guaranteed zero-hallucination AI for enterprise applications that upholds information integrity.",
   keywords: [
-    "AI solutions", 
-    "enterprise AI", 
-    "accurate AI", 
-    "hallucination-free AI", 
+    "zero-hallucination AI", 
+    "enterprise AI solutions", 
+    "factual consistency AI", 
+    "information integrity", 
     "transparent AI",
-    "AI platform",
-    "machine learning",
-    "business intelligence"
+    "AI verification",
+    "guaranteed accurate AI",
+    "source-verified AI",
+    "trustworthy AI systems",
+    "factual AI for enterprise",
+    "AI without hallucinations",
+    "verified information AI"
   ],
   twitter: {
     handle: "@psqrd_ai",
@@ -46,8 +50,8 @@ export const siteConfig = {
     foundingDate: "2023",
     founders: [
       {
-        name: "PSQRD Founder",
-        url: "https://psqrd.ai/team/founder"
+        name: "Edwin Gordon",
+        url: "https://psqrd.ai/team/edwin-gordon"
       }
     ],
     address: {

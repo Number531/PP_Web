@@ -20,12 +20,23 @@ export function MobileNavigation() {
   const pathname = usePathname()
   const isMobile = useMobile()
 
-  // Close menu when route changes
+  // Reset menu state and force re-render when route changes
   useEffect(() => {
     setIsOpen(false)
+    
+    // Force cleanup of any lingering state
+    const cleanup = () => {
+      document.body.style.overflow = ""
+    }
+    
+    window.addEventListener('popstate', cleanup)
+    return () => {
+      cleanup()
+      window.removeEventListener('popstate', cleanup)
+    }
   }, [pathname])
 
-  // Prevent body scrolling when menu is open
+  // Handle body scrolling when menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
@@ -44,6 +55,13 @@ export function MobileNavigation() {
       setIsOpen(false)
     }
   }, [isMobile, isOpen])
+  
+  // Handle toggle click with debounce to prevent double-firing
+  const handleToggleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation() // Prevent event bubbling
+    setIsOpen(prevState => !prevState)
+  }
 
   // Don't render anything on desktop
   if (!isMobile) return null
@@ -53,10 +71,7 @@ export function MobileNavigation() {
       {/* Mobile menu toggle button */}
       <button
         className="md:hidden flex items-center justify-center w-10 h-10 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
-        onClick={(e) => {
-          e.stopPropagation() // Prevent event bubbling
-          setIsOpen(!isOpen)
-        }}
+        onClick={handleToggleClick}
         aria-expanded={isOpen}
         aria-label="Toggle mobile menu"
       >
@@ -72,11 +87,11 @@ export function MobileNavigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 md:hidden"
+            className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 md:hidden overflow-y-auto"
             onClick={() => setIsOpen(false)}
           >
-            <div className="flex flex-col items-center justify-center h-full">
-              <nav className="flex flex-col items-center gap-8 p-8">
+            <div className="flex flex-col items-center justify-start h-full pt-24">
+              <nav className="flex flex-col items-center gap-8 p-8 w-full">
                 {navigationLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -84,10 +99,7 @@ export function MobileNavigation() {
                     className={`text-xl font-medium transition-all duration-300 ${
                       pathname === link.href ? "text-purple-400" : "text-white/90 hover:text-white"
                     }`}
-                    onClick={(e) => {
-                      e.stopPropagation() // Prevent event bubbling
-                      setIsOpen(false)
-                    }}
+                    onClick={() => setIsOpen(false)}
                   >
                     {link.label}
                   </Link>

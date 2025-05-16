@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, memo } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LoginModal } from "@/app/components/LoginModal"
+import { RequestDemoModal } from "@/app/components/RequestDemoModal"
 import { MobileNavigation } from "./MobileNavigation"
 import { useMobile } from "@/app/shared/hooks/use-mobile"
 import { useAuth } from "@/app/context/auth-context"
@@ -102,11 +102,11 @@ export const CompanyHeader = memo(function CompanyHeader() {
                   </button>
                 ) : (
                   <button
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors pointer-events-auto relative z-50"
-                    aria-label="Log in to your account"
+                    className="px-4 py-2 text-lg font-semibold tracking-tight transition-all pointer-events-auto relative z-50 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-300 hover:to-purple-500"
+                    aria-label="Request a demo"
                     onClick={() => setIsLoginModalOpen(true)}
                   >
-                    Login
+                    Request Demo
                   </button>
                 )}
               </div>
@@ -129,8 +129,8 @@ export const CompanyHeader = memo(function CompanyHeader() {
         </div>
       </motion.div>
 
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      {/* Request Demo Modal */}
+      <RequestDemoModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </>
   )
 })

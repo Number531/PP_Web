@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import { LoadingPlaceholder } from "../components/ui/LoadingPlaceholder"
 import { ContactHero } from "./components/ContactHero"
 import { ContactForm } from "./components/ContactForm"
-import { ContactLocations } from "./components/ContactLocations"
+// ContactLocations removed as requested
 import { ContactFAQ } from "./components/ContactFAQ"
 import { ContactCTA } from "./components/ContactCTA"
 
@@ -42,10 +42,9 @@ export default function ContactPage() {
       {/* Main content - with max height constraint to prevent excessive scrolling */}
       <main className="relative z-10 pt-20">
         <ContactHero />
-        <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
+        <section className="py-12 px-4 md:px-8 max-w-3xl mx-auto">
+          <div className="flex justify-center">
             <ContactForm />
-            <ContactLocations />
           </div>
         </section>
         <ContactFAQ />

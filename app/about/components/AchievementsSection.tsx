@@ -13,9 +13,9 @@ export function AchievementsSection() {
     },
     {
       icon: Users,
-      metric: "500+",
-      label: "Enterprise Clients",
-      description: "Trusted by leading organizations across industries"
+      metric: "10M+",
+      label: "Data Sources Verified",
+      description: "Continuous verification of information integrity across sources"
     },
     {
       icon: Globe,

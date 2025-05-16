@@ -144,22 +144,16 @@
   color: white;
 }
 
-/* Custom scrollbar for premium feel */
+/* Hide scrollbar for all browsers */
+/* For Webkit browsers like Chrome/Safari/Edge */
 ::-webkit-scrollbar {
-  width: 6px;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(128, 90, 213, 0.5);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(128, 90, 213, 0.7);
+/* For Firefox and other browsers */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 /* Premium text utilities */

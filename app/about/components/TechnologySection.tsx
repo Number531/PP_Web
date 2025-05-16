@@ -48,35 +48,24 @@ export function TechnologySection() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+        <div className="max-w-3xl mx-auto mb-16">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative h-[400px] bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-lg overflow-hidden"
+            className="bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-lg p-8 mb-8"
           >
-            <Image
-              src="/placeholder.svg?height=400&width=600"
-              alt="PSQRD Technology Visualization"
-              width={600}
-              height={400}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Hallucination-Free Architecture</h3>
-                <p className="text-white/70">
-                  Our multi-layered verification system ensures every output is factually accurate and traceable to
-                  trusted sources.
-                </p>
-              </div>
-            </div>
+            <h3 className="text-2xl font-bold mb-4 text-center">Hallucination-Free Architecture</h3>
+            <p className="text-white/80 text-lg">
+              Our multi-layered verification system ensures every output is factually accurate and traceable to
+              trusted sources. By combining advanced retrieval techniques with rigorous validation processes, we've created an AI system that eliminates hallucinations while maintaining exceptional efficiency.
+            </p>
           </motion.div>
-
+          
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >

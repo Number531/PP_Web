@@ -21,79 +21,29 @@ export function TeamCulture() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-lg p-8"
           >
-            <h3 className="text-2xl font-bold mb-4">What Makes Us Different</h3>
-            <div className="space-y-4">
-              <p className="text-white/80">
+            <h3 className="text-2xl font-bold mb-6 text-center">What Makes Us Different</h3>
+            <div className="space-y-6">
+              <p className="text-white/80 text-lg">
                 At PSQRD, we're not just building another AI company. We're creating a new standard for accuracy and
                 transparency in artificial intelligence.
               </p>
-              <p className="text-white/80">
+              <p className="text-white/80 text-lg">
                 Our team combines deep expertise in machine learning, natural language processing, and information
                 retrieval with a commitment to ethical AI development.
               </p>
-              <p className="text-white/80">
+              <p className="text-white/80 text-lg">
                 We believe in a collaborative, inclusive environment where diverse perspectives lead to better
                 solutions. We value curiosity, integrity, and a willingness to tackle hard problems.
               </p>
             </div>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 gap-4"
-          >
-            <div className="space-y-4">
-              <div className="rounded-lg overflow-hidden h-40 bg-purple-500/20">
-                <Image
-                  src="/placeholder.svg?height=160&width=300"
-                  alt="Team collaboration"
-                  width={300}
-                  height={160}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="rounded-lg overflow-hidden h-40 bg-purple-500/20">
-                <Image
-                  src="/placeholder.svg?height=160&width=300"
-                  alt="Office space"
-                  width={300}
-                  height={160}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="space-y-4 mt-8">
-              <div className="rounded-lg overflow-hidden h-40 bg-purple-500/20">
-                <Image
-                  src="/placeholder.svg?height=160&width=300"
-                  alt="Team event"
-                  width={300}
-                  height={160}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="rounded-lg overflow-hidden h-40 bg-purple-500/20">
-                <Image
-                  src="/placeholder.svg?height=160&width=300"
-                  alt="Team working"
-                  width={300}
-                  height={160}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   )
