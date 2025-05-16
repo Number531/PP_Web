@@ -12,7 +12,10 @@ const nextConfig = {
   images: {
     domains: ['psqrd.ai'],
     formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
   },
+  output: 'standalone',
+  poweredByHeader: false,
   experimental: {
     // Enable optimizations for improved performance
     optimizeCss: true,
