@@ -22,16 +22,16 @@ let tokenCache: TokenCache | null = null;
  * This is for server-to-server authentication (no user interaction)
  */
 export async function getMicrosoftTokens(): Promise<{
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token?: string;
 }> {
   // Check if we have a valid cached token
   const now = Date.now();
   if (tokenCache && tokenCache.expiresAt > now + 60000) {
     console.log('Using cached token');
     return {
-      accessToken: tokenCache.accessToken,
-      refreshToken: tokenCache.refreshToken,
+      access_token: tokenCache.accessToken,
+      refresh_token: tokenCache.refreshToken,
     };
   }
 
@@ -45,8 +45,8 @@ export async function getMicrosoftTokens(): Promise<{
  * Get new tokens using client credentials flow
  */
 async function getNewTokens(): Promise<{
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token?: string;
 }> {
   const tenantId = process.env.MICROSOFT_TENANT_ID;
   const clientId = process.env.OAUTH_CLIENT_ID;
@@ -79,17 +79,16 @@ async function getNewTokens(): Promise<{
     // Store in cache
     tokenCache = {
       accessToken: response.data.access_token,
-      // Client credentials flow doesn't need a refresh token
-      refreshToken: '', // Empty string instead of using OAUTH_REFRESH_TOKEN
+      refreshToken: response.data.refresh_token || '',
       expiresAt,
     };
 
     return {
-      accessToken: response.data.access_token,
-      refreshToken: '',
+      access_token: response.data.access_token,
+      refresh_token: response.data.refresh_token,
     };
   } catch (error) {
-    console.error('Error getting Microsoft tokens:', error);
+    console.error('Error getting token:', error);
     throw error;
   }
 }
@@ -98,8 +97,8 @@ async function getNewTokens(): Promise<{
  * Refresh tokens using a refresh token
  */
 async function refreshTokens(refreshToken: string): Promise<{
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }> {
   const tenantId = process.env.MICROSOFT_TENANT_ID;
   const clientId = process.env.OAUTH_CLIENT_ID;
@@ -135,8 +134,8 @@ async function refreshTokens(refreshToken: string): Promise<{
     };
 
     return {
-      accessToken: response.data.access_token,
-      refreshToken: tokenCache.refreshToken,
+      access_token: response.data.access_token,
+      refresh_token: tokenCache.refreshToken,
     };
   } catch (error) {
     console.error('Error refreshing Microsoft tokens:', error);

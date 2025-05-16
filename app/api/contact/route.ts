@@ -3,75 +3,72 @@ import nodemailer from "nodemailer"
 import { getMicrosoftTokens } from "@/lib/auth/microsoft-oauth"
 
 /**
- * Create an email transporter with Outlook/Office 365 integration
- * Supports both OAuth2 (preferred) and basic authentication
+ * Create an email transporter with Microsoft Graph API
+ * Uses OAuth2 client credentials flow for authentication
  */
 async function createTransporter() {
-  // Define types for nodemailer configuration
-  type AuthConfig = {
-    user: string;
-    pass?: string;
-    type?: string;
-    clientId?: string;
-    clientSecret?: string;
-    refreshToken?: string;
-    accessToken?: string;
-  };
-
-  type TransportConfig = {
-    host: string;
-    port: number;
-    secure: boolean;
-    auth: AuthConfig;
-    tls: {
-      ciphers: string;
-      rejectUnauthorized: boolean;
-    };
-  };
-
-  // Basic configuration for Outlook/Office 365
-  const transportConfig: TransportConfig = {
-    host: process.env.SMTP_HOST || "smtp.office365.com",
-    port: Number.parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_SECURE === "true",
-    auth: {
-      user: process.env.SMTP_USER || "your-email@example.com",
-      pass: process.env.SMTP_PASSWORD || "your-password"
-    },
-    tls: {
-      ciphers: 'SSLv3',
-      rejectUnauthorized: process.env.NODE_ENV === "production" // Only disable in development
-    }
-  };
-
-  // Check if we're using OAuth2 authentication
-  const useOAuth = process.env.OAUTH_CLIENT_ID && 
-                   process.env.OAUTH_CLIENT_SECRET && 
-                   process.env.MICROSOFT_TENANT_ID;
+  // Get access token using client credentials flow
+  const { access_token } = await getMicrosoftTokens();
   
-  if (useOAuth) {
-    try {
-      // Get fresh tokens using our OAuth utility
-      const { accessToken, refreshToken } = await getMicrosoftTokens();
-      
-      // Use OAuth2 authentication
-      transportConfig.auth = {
-        type: 'OAuth2',
-        user: process.env.SMTP_USER || "your-email@example.com",
-        clientId: process.env.OAUTH_CLIENT_ID!,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET!,
-        refreshToken,
-        accessToken
-      };
-      
-      console.log("Using OAuth2 authentication for email");
-    } catch (error) {
-      console.error("OAuth2 authentication failed, falling back to password auth:", error);
-      // We'll fall back to password authentication
+  console.log("Creating Microsoft Graph API email transporter");
+  
+  // Create a custom transport that uses Microsoft Graph API
+  const graphTransport = {
+    name: 'microsoft-graph',
+    version: '1.0.0',
+    send: async (mail: any, callback: any) => {
+      try {
+        const message = mail.data.message || {};
+        const from = message.from?.value?.[0]?.address || process.env.FROM_EMAIL;
+        const recipients = message.to?.value?.map((to: any) => ({ emailAddress: { address: to.address } })) || [];
+        const ccRecipients = message.cc?.value?.map((cc: any) => ({ emailAddress: { address: cc.address } })) || [];
+        const subject = message.subject || "";
+        const content = message.html ? { contentType: 'HTML', content: message.html } : { contentType: 'Text', content: message.text || "" };
+        
+        // Prepare the email message for Microsoft Graph API
+        const emailMessage = {
+          message: {
+            subject,
+            body: content,
+            toRecipients: recipients,
+            ccRecipients,
+            from: {
+              emailAddress: {
+                address: from
+              }
+            },
+            replyTo: message.replyTo?.value?.map((r: any) => ({ emailAddress: { address: r.address } })) || []
+          },
+          saveToSentItems: true
+        };
+        
+        console.log(`Sending email via Microsoft Graph API to ${recipients.map((r: any) => r.emailAddress.address).join(', ')}`);
+        
+        // Send the email using Microsoft Graph API
+        const response = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(emailMessage)
+        });
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Microsoft Graph API error: ${response.status} ${errorText}`);
+        }
+        
+        console.log('Email sent successfully via Microsoft Graph API');
+        callback(null, { response: '250 Message sent' });
+      } catch (error) {
+        console.error('Error sending email via Microsoft Graph API:', error);
+        callback(error);
+      }
     }
-  }
-
-  return nodemailer.createTransport(transportConfig);
+  };
+  
+  return nodemailer.createTransport(graphTransport);
 }
 
 // We'll create the transporter when needed to ensure fresh tokens
