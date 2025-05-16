@@ -1,80 +1,73 @@
 import { NextResponse } from "next/server"
-import nodemailer from "nodemailer"
 import { getMicrosoftTokens } from "@/lib/auth/microsoft-oauth"
 
 /**
- * Create an email transporter with Microsoft Graph API
+ * Send email directly using Microsoft Graph API
  * Uses OAuth2 client credentials flow for authentication
  */
-async function createTransporter() {
+async function sendEmail(options: {
+  from: string;
+  to: string | string[];
+  subject: string;
+  text?: string;
+  html?: string;
+  replyTo?: string;
+}) {
   // Get access token using client credentials flow
   const { access_token } = await getMicrosoftTokens();
   
-  console.log("Creating Microsoft Graph API email transporter");
+  console.log("Preparing to send email via Microsoft Graph API");
   
-  // Create a custom transport that uses Microsoft Graph API
-  const graphTransport = {
-    name: 'microsoft-graph',
-    version: '1.0.0',
-    auth: { type: 'oauth2' },
-    send: async (mail: any, callback: any) => {
-      try {
-        const message = mail.data.message || {};
-        const from = message.from?.value?.[0]?.address || process.env.FROM_EMAIL;
-        const recipients = message.to?.value?.map((to: any) => ({ emailAddress: { address: to.address } })) || [];
-        const ccRecipients = message.cc?.value?.map((cc: any) => ({ emailAddress: { address: cc.address } })) || [];
-        const subject = message.subject || "";
-        const content = message.html ? { contentType: 'HTML', content: message.html } : { contentType: 'Text', content: message.text || "" };
-        
-        // Prepare the email message for Microsoft Graph API
-        const emailMessage = {
-          message: {
-            subject,
-            body: content,
-            toRecipients: recipients,
-            ccRecipients,
-            from: {
-              emailAddress: {
-                address: from
-              }
-            },
-            replyTo: message.replyTo?.value?.map((r: any) => ({ emailAddress: { address: r.address } })) || []
-          },
-          saveToSentItems: true
-        };
-        
-        console.log(`Sending email via Microsoft Graph API to ${recipients.map((r: any) => r.emailAddress.address).join(', ')}`);
-        
-        // Send the email using Microsoft Graph API
-        const response = await fetch(`https://graph.microsoft.com/v1.0/users/${from}/sendMail`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${access_token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(emailMessage)
-        });
-        
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Graph API Error Response:', {
-            status: response.status,
-            statusText: response.statusText,
-            body: errorText
-          });
-          throw new Error(`Microsoft Graph API error: ${response.status} ${errorText}`);
+  const fromEmail = options.from || process.env.FROM_EMAIL || '';
+  const toEmails = Array.isArray(options.to) ? options.to : [options.to];
+  
+  // Prepare the email message for Microsoft Graph API
+  const emailMessage = {
+    message: {
+      subject: options.subject,
+      body: options.html 
+        ? { contentType: 'HTML', content: options.html } 
+        : { contentType: 'Text', content: options.text || '' },
+      toRecipients: toEmails.map(email => ({
+        emailAddress: { address: email }
+      })),
+      from: {
+        emailAddress: {
+          address: fromEmail
         }
-        
-        console.log('Email sent successfully via Microsoft Graph API');
-        callback(null, { response: '250 Message sent' });
-      } catch (error) {
-        console.error('Error sending email via Microsoft Graph API:', error);
-        callback(error);
-      }
-    }
+      },
+      replyTo: options.replyTo ? [{
+        emailAddress: { address: options.replyTo }
+      }] : []
+    },
+    saveToSentItems: true
   };
   
-  return nodemailer.createTransport(graphTransport);
+  console.log(`Sending email via Microsoft Graph API to ${toEmails.join(', ')}`);
+  console.log('Using sender address:', fromEmail);
+  
+  // Send the email using Microsoft Graph API
+  const response = await fetch(`https://graph.microsoft.com/v1.0/users/${fromEmail}/sendMail`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(emailMessage)
+  });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Graph API Error Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText
+    });
+    throw new Error(`Microsoft Graph API error: ${response.status} ${errorText}`);
+  }
+  
+  console.log('Email sent successfully via Microsoft Graph API');
+  return true;
 }
 
 // We'll create the transporter when needed to ensure fresh tokens
@@ -98,10 +91,9 @@ export async function POST(request: Request) {
     console.log(`OAUTH_CLIENT_SECRET: ${process.env.OAUTH_CLIENT_SECRET ? "Set" : "Not set"}`);
     console.log(`FROM_EMAIL: ${process.env.FROM_EMAIL || "Not set"}`);
     
-    // Create a fresh transporter with the latest tokens
-    console.log("Creating email transporter...");
-    const transporter = await createTransporter();
-    console.log("Email transporter created successfully");
+    // Log environment variables for debugging
+    console.log("Environment variables check:");
+    console.log(`FROM_EMAIL: ${process.env.FROM_EMAIL || "Not set"}`);
     
     // Parse the request body
     const { name, email, company, subject, message } = await request.json()
@@ -120,8 +112,8 @@ export async function POST(request: Request) {
     // Send email to company
     console.log("Attempting to send email...");
     try {
-      await transporter.sendMail({
-        from: `"Website Contact Form" <${process.env.FROM_EMAIL || "noreply@yourcompany.com"}>`,
+      await sendEmail({
+        from: process.env.FROM_EMAIL || "noreply@yourcompany.com",
         to: recipient,
         replyTo: email,
         subject: `New Contact Form Submission: ${subject}`,
@@ -153,8 +145,8 @@ ${message}
     // Send confirmation email to user
     console.log("Attempting to send confirmation email to user...");
     try {
-      await transporter.sendMail({
-        from: `"Your Company" <${process.env.FROM_EMAIL || "noreply@yourcompany.com"}>`,
+      await sendEmail({
+        from: process.env.FROM_EMAIL || "noreply@yourcompany.com",
         to: email,
         subject: "Thank you for contacting us",
         text: `
