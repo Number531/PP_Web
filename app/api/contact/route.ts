@@ -45,7 +45,7 @@ async function createTransporter() {
         console.log(`Sending email via Microsoft Graph API to ${recipients.map((r: any) => r.emailAddress.address).join(', ')}`);
         
         // Send the email using Microsoft Graph API
-        const response = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+        const response = await fetch(`https://graph.microsoft.com/v1.0/users/${from}/sendMail`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${access_token}`,
