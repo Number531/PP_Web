@@ -91,9 +91,14 @@ export async function POST(request: Request) {
     console.log(`OAUTH_CLIENT_SECRET: ${process.env.OAUTH_CLIENT_SECRET ? "Set" : "Not set"}`);
     console.log(`FROM_EMAIL: ${process.env.FROM_EMAIL || "Not set"}`);
     
-    // Log environment variables for debugging
-    console.log("Environment variables check:");
-    console.log(`FROM_EMAIL: ${process.env.FROM_EMAIL || "Not set"}`);
+    // Log all environment variables for debugging
+    console.log("Detailed environment variables check:");
+    console.log(`MICROSOFT_TENANT_ID length: ${process.env.MICROSOFT_TENANT_ID?.length || 0}`);
+    console.log(`OAUTH_CLIENT_ID length: ${process.env.OAUTH_CLIENT_ID?.length || 0}`);
+    console.log(`OAUTH_CLIENT_SECRET length: ${process.env.OAUTH_CLIENT_SECRET?.length || 0}`);
+    console.log(`FROM_EMAIL value: ${process.env.FROM_EMAIL}`);
+    console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+    console.log(`VERCEL_ENV: ${process.env.VERCEL_ENV}`);
     
     // Parse the request body
     const { name, email, company, subject, message } = await request.json()
