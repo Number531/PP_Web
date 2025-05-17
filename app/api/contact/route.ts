@@ -16,18 +16,26 @@ async function sendEmail(options: {
   // For debugging - log the options
   console.log('Email options:', JSON.stringify(options, null, 2));
   
-  // Hard-coded credentials for testing
-  const tenantId = '09c43c16-90f6-4e5f-be39-684cff80debf';
-  const clientId = '99b76735-2ecf-4c83-ac1a-d170662632a0';
-  // Using the new client secret value
-  const clientSecret = 'n8P8Q~BNFt816N8IIbqJvShdXyKvhNhbImJxhaSi'; 
+  // Get credentials from environment variables
+  const tenantId = process.env.MICROSOFT_TENANT_ID;
+  const clientId = process.env.OAUTH_CLIENT_ID;
+  const clientSecret = process.env.OAUTH_CLIENT_SECRET;
   
-  console.log('Using hardcoded credentials for testing');
+  // Validate environment variables
+  if (!tenantId || !clientId || !clientSecret) {
+    console.error('Missing required OAuth configuration:');
+    console.error(`MICROSOFT_TENANT_ID: ${tenantId ? 'Set' : 'Not set'}`);
+    console.error(`OAUTH_CLIENT_ID: ${clientId ? 'Set' : 'Not set'}`);
+    console.error(`OAUTH_CLIENT_SECRET: ${clientSecret ? 'Set' : 'Not set'}`);
+    throw new Error('Missing required OAuth configuration');
+  }
+  
+  console.log('Using credentials from environment variables');
   console.log(`Tenant ID: ${tenantId.substring(0, 5)}...`);
   console.log(`Client ID: ${clientId.substring(0, 5)}...`);
   console.log(`Client Secret length: ${clientSecret.length}`);
   
-  // Get token directly instead of using getMicrosoftTokens
+  // Get token directly
   console.log('Getting token directly');
   
   let access_token;
