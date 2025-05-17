@@ -19,7 +19,8 @@ async function sendEmail(options: {
   // Hard-coded credentials for testing
   const tenantId = '09c43c16-90f6-4e5f-be39-684cff80debf';
   const clientId = '99b76735-2ecf-4c83-ac1a-d170662632a0';
-  const clientSecret = 'a6925092-3f4a-4a3c-8ba7-8564b7d044b6';
+  // Using the new client secret value
+  const clientSecret = 'n8P8Q~BNFt816N8IIbqJvShdXyKvhNhbImJxhaSi'; 
   
   console.log('Using hardcoded credentials for testing');
   console.log(`Tenant ID: ${tenantId.substring(0, 5)}...`);
