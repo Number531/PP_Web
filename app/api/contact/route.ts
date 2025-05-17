@@ -14,64 +14,22 @@ async function sendEmail(options: {
   replyTo?: string;
 }) {
   // For debugging - log the options
-  console.log('Email options:', JSON.stringify(options, null, 2));
+  console.log('Email options:', JSON.stringify({
+    from: options.from,
+    to: options.to,
+    subject: options.subject,
+    hasText: !!options.text,
+    hasHtml: !!options.html,
+    hasReplyTo: !!options.replyTo
+  }));
   
-  // Get credentials from environment variables
-  const tenantId = process.env.MICROSOFT_TENANT_ID;
-  const clientId = process.env.OAUTH_CLIENT_ID;
-  const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+  // Get access token using client credentials flow
+  console.log('Getting Microsoft Graph API token');
+  const { access_token } = await getMicrosoftTokens();
+  console.log('Token obtained successfully');
   
-  // Validate environment variables
-  if (!tenantId || !clientId || !clientSecret) {
-    console.error('Missing required OAuth configuration:');
-    console.error(`MICROSOFT_TENANT_ID: ${tenantId ? 'Set' : 'Not set'}`);
-    console.error(`OAUTH_CLIENT_ID: ${clientId ? 'Set' : 'Not set'}`);
-    console.error(`OAUTH_CLIENT_SECRET: ${clientSecret ? 'Set' : 'Not set'}`);
-    throw new Error('Missing required OAuth configuration');
-  }
-  
-  console.log('Using credentials from environment variables');
-  console.log(`Tenant ID: ${tenantId.substring(0, 5)}...`);
-  console.log(`Client ID: ${clientId.substring(0, 5)}...`);
-  console.log(`Client Secret length: ${clientSecret.length}`);
-  
-  // Get token directly
-  console.log('Getting token directly');
-  
-  let access_token;
-  try {
-    const tokenResponse = await fetch(
-      `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: clientId,
-          scope: 'https://graph.microsoft.com/.default',
-          client_secret: clientSecret,
-          grant_type: 'client_credentials',
-        }).toString(),
-      }
-    );
-    
-    if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      console.error('Token Error Response:', {
-        status: tokenResponse.status,
-        statusText: tokenResponse.statusText,
-        body: errorText
-      });
-      throw new Error(`Token error: ${tokenResponse.status} ${errorText}`);
-    }
-    
-    const tokenData = await tokenResponse.json();
-    console.log('Token obtained successfully');
-    access_token = tokenData.access_token;
-  } catch (tokenError) {
-    console.error('Error getting token:', tokenError);
-    throw tokenError;
+  if (!access_token) {
+    throw new Error('Failed to obtain access token');
   }
   
   console.log("Preparing to send email via Microsoft Graph API");
