@@ -24,11 +24,13 @@ async function sendEmail(options: {
     // Get access token using client credentials flow
     console.log('Getting Microsoft Graph API token');
     const { access_token } = await getMicrosoftTokens();
-    console.log('Token obtained successfully');
     
     if (!access_token) {
-      throw new Error('Failed to obtain access token');
+      console.log('No access token received, falling back to email logging');
+      throw new Error('No access token available');
     }
+    
+    console.log('Token obtained successfully, length:', access_token.length);
     
     console.log("Preparing to send email via Microsoft Graph API");
     
