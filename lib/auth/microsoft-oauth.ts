@@ -68,14 +68,25 @@ async function getNewTokens(): Promise<{
 
   try {
     console.log('Getting new token using client credentials flow');
+    console.log(`Token request URL: https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`);
+    console.log('Token request parameters:');
+    console.log(`- client_id: ${clientId.substring(0, 5)}...`);
+    console.log(`- scope: https://graph.microsoft.com/.default`);
+    console.log(`- client_secret: [REDACTED, length: ${clientSecret.length}]`);
+    console.log(`- grant_type: client_credentials`);
+    
+    // Create request parameters
+    const params = new URLSearchParams({
+      client_id: clientId,
+      scope: 'https://graph.microsoft.com/.default',
+      client_secret: clientSecret,
+      grant_type: 'client_credentials',
+    });
+    
+    // Make the token request
     const response = await axios.post<TokenResponse>(
       `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-      new URLSearchParams({
-        client_id: clientId,
-        scope: 'https://graph.microsoft.com/.default',
-        client_secret: clientSecret,
-        grant_type: 'client_credentials',
-      }),
+      params,
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -97,8 +108,25 @@ async function getNewTokens(): Promise<{
       access_token: response.data.access_token,
       refresh_token: response.data.refresh_token,
     };
-  } catch (error) {
-    console.error('Error getting token:', error);
+  } catch (error: any) {
+    console.error('Error getting token:');
+    
+    // Log detailed error information
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Response status:', error.response.status);
+      console.error('Response headers:', JSON.stringify(error.response.headers, null, 2));
+      console.error('Response data:', JSON.stringify(error.response.data, null, 2));
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('No response received from server');
+      console.error('Request details:', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error message:', error.message);
+    }
+    
     throw error;
   }
 }
