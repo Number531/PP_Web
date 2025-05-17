@@ -200,23 +200,32 @@ ${message}
         text: `
 Dear ${name},
 
-Thank you for reaching out to us. We have received your message and will get back to you shortly.
+Thank you for reaching out to P-Squared! I personally appreciate you taking the time to connect with us.
 
-Your message details:
-Subject: ${subject}
-Message: ${message}
+I wanted to let you know that we've received your message and one of our team members is already reviewing it. We typically respond within 24 hours, and we're committed to providing you with the information and support you need.
 
-Best regards,
-Your Company Team
+We value every connection and look forward to the opportunity to assist you.
+
+Warmest regards,
+
+Edwin Gordon
+Founder, P-Squared
+EGORDON@PSQRD.AI
         `,
         html: `
-<h2>Thank you for contacting us</h2>
+<h2>Thank you for connecting with us!</h2>
 <p>Dear ${name},</p>
-<p>Thank you for reaching out to us. We have received your message and will get back to you shortly.</p>
+<p>Thank you for reaching out to P-Squared! I personally appreciate you taking the time to connect with us.</p>
+<p>I wanted to let you know that we've received your message and one of our team members is already reviewing it. We typically respond within 24 hours, and we're committed to providing you with the information and support you need.</p>
 <h3>Your message details:</h3>
-<p><strong>Subject:</strong> ${subject}</p>
 <p><strong>Message:</strong> ${message.replace(/\n/g, "<br>")}</p>
-<p>Best regards,<br>Your Company Team</p>
+<p>We value every connection and look forward to the opportunity to assist you.</p>
+<p>Warmest regards,</p>
+<p>
+<strong>Edwin Gordon</strong><br>
+Founder, P-Squared<br>
+<a href="mailto:EGORDON@PSQRD.AI">EGORDON@PSQRD.AI</a>
+</p>
         `,
       });
       console.log("Confirmation email sent successfully!");
