@@ -70,8 +70,8 @@ async function getNewTokens(): Promise<{
     console.log('Environment variables missing, using hardcoded values for testing');
     tenantId = '09c43c16-90f6-4e5f-be39-684cff80debf';
     clientId = '99b76735-2ecf-4c83-ac1a-d170662632a0';
-    // Using the correct client secret value from memory
-    clientSecret = 'a6925092-3f4a-4a3c-8ba7-8564b7d044b6';
+    // Using the correct client secret value
+    clientSecret = 'n8P8Q~BNFt816N8IIbqJvShdXyKvhNhbImJxhaSi';
   }
   
   // Log what we're using (without revealing full secret)
@@ -161,8 +161,8 @@ async function refreshTokens(refreshToken: string): Promise<{
     console.log('Environment variables missing in refreshTokens, using hardcoded values');
     tenantId = '09c43c16-90f6-4e5f-be39-684cff80debf';
     clientId = '99b76735-2ecf-4c83-ac1a-d170662632a0';
-    // Using the correct client secret value from memory
-    clientSecret = 'a6925092-3f4a-4a3c-8ba7-8564b7d044b6';
+    // Using the correct client secret value
+    clientSecret = 'n8P8Q~BNFt816N8IIbqJvShdXyKvhNhbImJxhaSi';
   }
   
   // Log what we're using (without revealing full secret)
