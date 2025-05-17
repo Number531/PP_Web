@@ -20,14 +20,46 @@ export function JobApplication({ jobTitle }: JobApplicationProps) {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    try {
+      // Create FormData object to send files
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('jobTitle', jobTitle);
+      
+      // Add resume file
+      if (resumeFile) {
+        formData.append('resume', resumeFile);
+      }
+      
+      // Add cover letter if provided
+      if (coverLetterFile) {
+        formData.append('coverLetter', coverLetterFile);
+      }
+      
+      // Submit to API
+      const response = await fetch('/api/careers', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit application');
+      }
+      
+      // Success
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      setIsSubmitting(false);
+      alert('There was an error submitting your application. Please try again.');
+    }
   }
 
   if (isSubmitted) {
