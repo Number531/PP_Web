@@ -217,8 +217,6 @@ EGORDON@PSQRD.AI
 <p>Dear ${name},</p>
 <p>Thank you for reaching out to P-Squared! I personally appreciate you taking the time to connect with us.</p>
 <p>I wanted to let you know that we've received your message and one of our team members is already reviewing it. We typically respond within 24 hours, and we're committed to providing you with the information and support you need.</p>
-<h3>Your message details:</h3>
-<p><strong>Message:</strong> ${message.replace(/\n/g, "<br>")}</p>
 <p>We value every connection and look forward to the opportunity to assist you.</p>
 <p>Warmest regards,</p>
 <p>
@@ -226,6 +224,11 @@ EGORDON@PSQRD.AI
 Founder, P-Squared<br>
 <a href="mailto:EGORDON@PSQRD.AI">EGORDON@PSQRD.AI</a>
 </p>
+<hr style="margin-top: 30px; margin-bottom: 20px; border-top: 1px solid #eee;">
+<div style="font-size: 0.85em; color: #666;">
+  <p><strong>Your message details:</strong></p>
+  <p>${message.replace(/\n/g, "<br>")}</p>
+</div>
         `,
       });
       console.log("Confirmation email sent successfully!");
