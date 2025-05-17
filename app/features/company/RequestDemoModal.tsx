@@ -68,14 +68,35 @@ export function RequestDemoModal({ isOpen, onClose }: RequestDemoModalProps) {
     setIsSubmitting(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      // Send data to the API endpoint
+      const response = await fetch('/api/demo-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          jobTitle: formData.jobTitle,
+          phone: formData.phone,
+          industry: formData.industry,
+          useCase: formData.useCase
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Failed to submit demo request')
+      }
 
       // Reset form and show success
       setFormData(initialFormData)
       setIsSuccess(true)
     } catch (error) {
       console.error("Error submitting form:", error)
+      // Display error message in the useCase field as a general error
+      setErrors({ useCase: 'There was an error submitting your request. Please try again.' })
     } finally {
       setIsSubmitting(false)
     }
