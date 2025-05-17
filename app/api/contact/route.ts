@@ -13,8 +13,57 @@ async function sendEmail(options: {
   html?: string;
   replyTo?: string;
 }) {
-  // Get access token using client credentials flow
-  const { access_token } = await getMicrosoftTokens();
+  // For debugging - log the options
+  console.log('Email options:', JSON.stringify(options, null, 2));
+  
+  // Hard-coded credentials for testing
+  const tenantId = '09c43c16-90f6-4e5f-be39-684cff80debf';
+  const clientId = '99b76735-2ecf-4c83-ac1a-d170662632a0';
+  const clientSecret = 'a6925092-3f4a-4a3c-8ba7-8564b7d044b6';
+  
+  console.log('Using hardcoded credentials for testing');
+  console.log(`Tenant ID: ${tenantId.substring(0, 5)}...`);
+  console.log(`Client ID: ${clientId.substring(0, 5)}...`);
+  console.log(`Client Secret length: ${clientSecret.length}`);
+  
+  // Get token directly instead of using getMicrosoftTokens
+  console.log('Getting token directly');
+  
+  let access_token;
+  try {
+    const tokenResponse = await fetch(
+      `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          client_id: clientId,
+          scope: 'https://graph.microsoft.com/.default',
+          client_secret: clientSecret,
+          grant_type: 'client_credentials',
+        }).toString(),
+      }
+    );
+    
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text();
+      console.error('Token Error Response:', {
+        status: tokenResponse.status,
+        statusText: tokenResponse.statusText,
+        body: errorText
+      });
+      throw new Error(`Token error: ${tokenResponse.status} ${errorText}`);
+    }
+    
+    const tokenData = await tokenResponse.json();
+    console.log('Token obtained successfully');
+    access_token = tokenData.access_token;
+  } catch (tokenError) {
+    console.error('Error getting token:', tokenError);
+    throw tokenError;
+  }
   
   console.log("Preparing to send email via Microsoft Graph API");
   
