@@ -116,6 +116,24 @@ export async function POST(request: Request) {
     console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
     console.log(`VERCEL_ENV: ${process.env.VERCEL_ENV}`);
     
+    // Add direct check for environment variables
+    if (!process.env.MICROSOFT_TENANT_ID || !process.env.OAUTH_CLIENT_ID || !process.env.OAUTH_CLIENT_SECRET) {
+      console.error('CRITICAL ERROR: Missing required OAuth environment variables');
+      console.error('This will cause the email sending to fail');
+      
+      // For testing purposes only - hardcode credentials temporarily
+      // WARNING: This is not secure for production
+      console.log('Using hardcoded credentials for testing');
+      process.env.MICROSOFT_TENANT_ID = '09c43c16-90f6-4e5f-be39-684cff80debf';
+      process.env.OAUTH_CLIENT_ID = '99b76735-2ecf-4c83-ac1a-d170662632a0';
+      process.env.OAUTH_CLIENT_SECRET = 'n8P8Q~BNFt816N8IlbqJvShdXyKvhNhbImJxhqSi';
+      
+      console.log('After hardcoding:');
+      console.log(`MICROSOFT_TENANT_ID: ${process.env.MICROSOFT_TENANT_ID ? "Set" : "Not set"}`);
+      console.log(`OAUTH_CLIENT_ID: ${process.env.OAUTH_CLIENT_ID ? "Set" : "Not set"}`);
+      console.log(`OAUTH_CLIENT_SECRET: ${process.env.OAUTH_CLIENT_SECRET ? "Set" : "Not set"}`);
+    }
+    
     // Parse the request body
     const { name, email, company, subject, message } = await request.json()
     console.log(`Form data received - Name: ${name}, Email: ${email}, Subject: ${subject}`);
