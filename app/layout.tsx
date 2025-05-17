@@ -29,6 +29,7 @@ import { SEOAuditTool } from "./components/SEOAuditTool"
 import { SEOPerformanceMonitor } from "./components/SEOPerformanceMonitor"
 import SEOCanonicalComponent from "./components/SEOCanonicalComponent"
 import { siteConfig } from "./seo/metadata-config"
+import { Analytics } from "@vercel/analytics/react"
 
 // Load Inter with specific subsets and weights for a premium look
 const inter = Inter({
@@ -102,6 +103,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 
                 {/* Ensure canonical URLs are properly set */}
                 <SEOCanonicalComponent url={siteConfig.url} />
+                
+                {/* Vercel Analytics */}
+                <Analytics />
               </ThemeProvider>
             </AuthProvider>
           </ErrorBoundary>
