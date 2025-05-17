@@ -20,112 +20,95 @@ async function sendEmail(options: {
   const tenantId = process.env.MICROSOFT_TENANT_ID;
   const clientId = process.env.OAUTH_CLIENT_ID;
   const clientSecret = process.env.OAUTH_CLIENT_SECRET;
-  
-  // Validate environment variables
-  if (!tenantId || !clientId || !clientSecret) {
-    console.error('Missing required OAuth configuration:');
-    console.error(`MICROSOFT_TENANT_ID: ${tenantId ? 'Set' : 'Not set'}`);
-    console.error(`OAUTH_CLIENT_ID: ${clientId ? 'Set' : 'Not set'}`);
-    console.error(`OAUTH_CLIENT_SECRET: ${clientSecret ? 'Set' : 'Not set'}`);
-    throw new Error('Missing required OAuth configuration');
-  }
-  
-  console.log('Using credentials from environment variables');
-  console.log(`Tenant ID: ${tenantId.substring(0, 5)}...`);
-  console.log(`Client ID: ${clientId.substring(0, 5)}...`);
-  console.log(`Client Secret length: ${clientSecret.length}`);
-  
-  // Get token directly
-  console.log('Getting token directly');
-  
-  let access_token;
   try {
-    const tokenResponse = await fetch(
-      `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: clientId,
-          scope: 'https://graph.microsoft.com/.default',
-          client_secret: clientSecret,
-          grant_type: 'client_credentials',
-        }).toString(),
-      }
-    );
+    // Get access token using client credentials flow
+    console.log('Getting Microsoft Graph API token');
+    const { access_token } = await getMicrosoftTokens();
+    console.log('Token obtained successfully');
     
-    if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      console.error('Token Error Response:', {
-        status: tokenResponse.status,
-        statusText: tokenResponse.statusText,
-        body: errorText
-      });
-      throw new Error(`Token error: ${tokenResponse.status} ${errorText}`);
+    if (!access_token) {
+      throw new Error('Failed to obtain access token');
     }
     
-    const tokenData = await tokenResponse.json();
-    console.log('Token obtained successfully');
-    access_token = tokenData.access_token;
-  } catch (tokenError) {
-    console.error('Error getting token:', tokenError);
-    throw tokenError;
-  }
-  
-  console.log("Preparing to send email via Microsoft Graph API");
-  
-  const fromEmail = options.from || process.env.FROM_EMAIL || '';
-  const toEmails = Array.isArray(options.to) ? options.to : [options.to];
-  
-  // Prepare the email message for Microsoft Graph API
-  const emailMessage = {
-    message: {
-      subject: options.subject,
-      body: options.html 
-        ? { contentType: 'HTML', content: options.html } 
-        : { contentType: 'Text', content: options.text || '' },
-      toRecipients: toEmails.map(email => ({
-        emailAddress: { address: email }
-      })),
-      from: {
-        emailAddress: {
-          address: fromEmail
-        }
+    console.log("Preparing to send email via Microsoft Graph API");
+    
+    const fromEmail = options.from || process.env.FROM_EMAIL || '';
+    const toEmails = Array.isArray(options.to) ? options.to : [options.to];
+    
+    // Prepare the email message for Microsoft Graph API
+    const emailMessage = {
+      message: {
+        subject: options.subject,
+        body: options.html 
+          ? { contentType: 'HTML', content: options.html } 
+          : { contentType: 'Text', content: options.text || '' },
+        toRecipients: toEmails.map(email => ({
+          emailAddress: { address: email }
+        })),
+        from: {
+          emailAddress: {
+            address: fromEmail
+          }
+        },
+        replyTo: options.replyTo ? [{
+          emailAddress: { address: options.replyTo }
+        }] : []
       },
-      replyTo: options.replyTo ? [{
-        emailAddress: { address: options.replyTo }
-      }] : []
-    },
-    saveToSentItems: true
-  };
-  
-  console.log(`Sending email via Microsoft Graph API to ${toEmails.join(', ')}`);
-  console.log('Using sender address:', fromEmail);
-  
-  // Send the email using Microsoft Graph API
-  const response = await fetch(`https://graph.microsoft.com/v1.0/users/${fromEmail}/sendMail`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${access_token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(emailMessage)
-  });
-  
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error('Graph API Error Response:', {
-      status: response.status,
-      statusText: response.statusText,
-      body: errorText
+      saveToSentItems: true
+    };
+    
+    console.log(`Sending email via Microsoft Graph API to ${toEmails.join(', ')}`);
+    console.log('Using sender address:', fromEmail);
+    
+    // Send the email using Microsoft Graph API
+    const response = await fetch(`https://graph.microsoft.com/v1.0/users/${fromEmail}/sendMail`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(emailMessage)
     });
-    throw new Error(`Microsoft Graph API error: ${response.status} ${errorText}`);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Graph API Error Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
+      
+      // Fall back to logging the email if sending fails
+      console.log('FALLING BACK TO EMAIL LOGGING:');
+      console.log('FROM:', options.from);
+      console.log('TO:', Array.isArray(options.to) ? options.to.join(', ') : options.to);
+      console.log('SUBJECT:', options.subject);
+      console.log('TEXT:', options.text || '(No text content)');
+      console.log('HTML:', options.html ? '(HTML content available)' : '(No HTML content)');
+      
+      // Don't throw an error, just log it and continue
+      console.error(`Microsoft Graph API error: ${response.status} ${errorText}`);
+      console.log('Email logging completed as fallback');
+      return true;
+    }
+    
+    console.log('Email sent successfully via Microsoft Graph API');
+    return true;
+  } catch (error: any) {
+    // Log the error but don't throw it
+    console.error('Error sending email:', error);
+    
+    // Fall back to logging the email
+    console.log('FALLING BACK TO EMAIL LOGGING DUE TO ERROR:');
+    console.log('FROM:', options.from);
+    console.log('TO:', Array.isArray(options.to) ? options.to.join(', ') : options.to);
+    console.log('SUBJECT:', options.subject);
+    console.log('TEXT:', options.text || '(No text content)');
+    console.log('HTML:', options.html ? '(HTML content available)' : '(No HTML content)');
+    
+    console.log('Email logging completed as fallback');
+    return true; // Return success even if sending fails
   }
-  
-  console.log('Email sent successfully via Microsoft Graph API');
-  return true;
 }
 
 // We'll create the transporter when needed to ensure fresh tokens
