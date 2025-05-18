@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { RequestDemoModal } from '@/app/components/RequestDemoModal'
-
 import { motion } from 'framer-motion'
-import { Search, Clock, FileCheck, BookOpen } from 'lucide-react'
+import { Search, Clock, FileCheck, BookOpen, CheckCircle, Loader } from 'lucide-react'
 
 export function NewsMediaContent() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const features = [
     {
       icon: <Search className="w-6 h-6 text-purple-400" />,
@@ -43,6 +43,66 @@ export function NewsMediaContent() {
   const testimonial = {
     quote: "PSQRD's AI research tool has transformed our newsroom. We're producing more in-depth stories with fewer resources while maintaining our commitment to factual reporting.",
     author: "Editorial Director, Major News Publication"
+  }
+
+  // Handle demo request submission
+  const handleDemoRequest = async () => {
+    setIsSubmitting(true)
+    setSubmitError(null)
+    
+    try {
+      // Get user email from localStorage if available (for logged-in users)
+      // or prompt for email if not available
+      let userEmail = localStorage.getItem('userEmail')
+      
+      if (!userEmail) {
+        userEmail = window.prompt('Please enter your email to request a demo:')
+        if (!userEmail) {
+          setIsSubmitting(false)
+          return // User cancelled the prompt
+        }
+        
+        // Basic email validation
+        if (!/^\S+@\S+\.\S+$/.test(userEmail)) {
+          setSubmitError('Please enter a valid email address')
+          setIsSubmitting(false)
+          return
+        }
+      }
+      
+      // Send data to the API endpoint
+      const response = await fetch('/api/demo-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: localStorage.getItem('userName') || 'Prospective Client',
+          email: userEmail,
+          company: localStorage.getItem('userCompany') || 'Not provided',
+          useCase: 'News Media AI Solutions - Demo Request',
+          industry: 'Media'
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Failed to submit demo request')
+      }
+      
+      setSubmitSuccess(true)
+      
+      // Store the email for future use
+      if (!localStorage.getItem('userEmail')) {
+        localStorage.setItem('userEmail', userEmail)
+      }
+      
+    } catch (error) {
+      console.error('Error submitting demo request:', error)
+      setSubmitError("There was an error submitting your request. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const containerVariants = {
@@ -140,24 +200,50 @@ export function NewsMediaContent() {
 
       {/* CTA */}
       <motion.div variants={itemVariants} className="text-center mt-8">
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
-        >
-          Request a Demo
-        </button>
-        <p className="text-white/60 text-sm mt-2">
-          See how PSQRD can transform your newsroom's research capabilities.
-        </p>
+        {submitSuccess ? (
+          <div className="flex flex-col items-center justify-center p-4">
+            <CheckCircle className="w-12 h-12 text-green-500 mb-4" />
+            <h3 className="text-xl font-semibold text-white mb-2">Request Submitted!</h3>
+            <p className="text-white/70 mb-4">We'll contact you shortly to schedule your demo.</p>
+          </div>
+        ) : submitError ? (
+          <div className="flex flex-col items-center justify-center p-4">
+            <p className="text-red-400 mb-4">{submitError}</p>
+            <form onSubmit={handleDemoRequest}>
+              <input type="email" name="email" placeholder="Enter your email" className="bg-black/20 border border-purple-500/20 rounded-lg p-2 mb-4" />
+              <button 
+                type="submit"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
+                disabled={isSubmitting}
+              >
+                Try Again
+              </button>
+            </form>
+          </div>
+        ) : (
+          <form onSubmit={handleDemoRequest}>
+            <input type="email" name="email" placeholder="Enter your email" className="bg-black/20 border border-purple-500/20 rounded-lg p-2 mb-4" />
+            <button 
+              type="submit"
+              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Request a Demo"
+              )}
+            </button>
+            <p className="text-white/60 text-sm mt-2">
+              See how PSQRD can transform your content verification and fact-checking processes.
+            </p>
+          </form>
+        )}
       </motion.div>
     </motion.div>
   )
-  
-  return (
-    <>
-      {/* Main content rendered above */}
-      {/* Demo Request Modal */}
-      <RequestDemoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
-  )
+
 }
