@@ -1,9 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Stethoscope, FileText, BookOpen, ClipboardCheck } from 'lucide-react'
+import { RequestDemoModal } from '@/app/components/RequestDemoModal'
 
 export function HealthcareContent() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  
   const features = [
     {
       icon: <BookOpen className="w-6 h-6 text-purple-400" />,
@@ -136,7 +140,10 @@ export function HealthcareContent() {
 
       {/* CTA */}
       <motion.div variants={itemVariants} className="text-center mt-8">
-        <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
+        >
           Request a Demo
         </button>
         <p className="text-white/60 text-sm mt-2">
@@ -144,5 +151,74 @@ export function HealthcareContent() {
         </p>
       </motion.div>
     </motion.div>
+  )
+  
+  return (
+    <>
+      <motion.div
+        className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.h1 variants={itemVariants} className="text-4xl font-bold text-center text-white mb-8">
+          Healthcare AI Solutions
+        </motion.h1>
+
+        <motion.p variants={itemVariants} className="text-xl text-center text-white/80 mb-12 max-w-3xl mx-auto">
+          Transform medical research, clinical workflows, and regulatory compliance with AI that guarantees accuracy and transparency.
+        </motion.p>
+
+        {/* Features */}
+        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {features.map((feature, index) => (
+            <div key={index} className="bg-glass-purple p-6 rounded-lg border border-purple-500/20">
+              <div className="mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+              <p className="text-white/70">{feature.description}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Benefits */}
+        <motion.div variants={itemVariants} className="mb-12">
+          <h2 className="text-2xl font-semibold text-white mb-6 text-center">Key Benefits</h2>
+          <div className="bg-glass-purple p-6 rounded-lg border border-purple-500/20">
+            <ul className="space-y-3">
+              {benefits.map((benefit, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-purple-400 mr-2">•</span>
+                  <span className="text-white/80">{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+
+        {/* Testimonial */}
+        <motion.div variants={itemVariants} className="bg-glass-purple p-6 rounded-lg border border-purple-500/20 mb-12">
+          <blockquote className="border-l-4 border-purple-500 pl-4 italic text-white/80">
+            "{testimonial.quote}"
+            <footer className="mt-2 text-sm text-purple-400 not-italic">— {testimonial.author}</footer>
+          </blockquote>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div variants={itemVariants} className="text-center mt-8">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
+          >
+            Request a Demo
+          </button>
+          <p className="text-white/60 text-sm mt-2">
+            See how PSQRD can transform your medical research and regulatory processes.
+          </p>
+        </motion.div>
+      </motion.div>
+      
+      {/* Demo Request Modal */}
+      <RequestDemoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   )
 }

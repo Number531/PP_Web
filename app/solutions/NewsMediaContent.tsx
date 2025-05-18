@@ -1,9 +1,13 @@
 'use client'
 
+import { useState } from 'react'
+import { RequestDemoModal } from '@/app/components/RequestDemoModal'
+
 import { motion } from 'framer-motion'
 import { Search, Clock, FileCheck, BookOpen } from 'lucide-react'
 
 export function NewsMediaContent() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const features = [
     {
       icon: <Search className="w-6 h-6 text-purple-400" />,
@@ -136,7 +140,10 @@ export function NewsMediaContent() {
 
       {/* CTA */}
       <motion.div variants={itemVariants} className="text-center mt-8">
-        <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
+        >
           Request a Demo
         </button>
         <p className="text-white/60 text-sm mt-2">
@@ -144,5 +151,13 @@ export function NewsMediaContent() {
         </p>
       </motion.div>
     </motion.div>
+  )
+  
+  return (
+    <>
+      {/* Main content rendered above */}
+      {/* Demo Request Modal */}
+      <RequestDemoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   )
 }

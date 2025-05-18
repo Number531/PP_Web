@@ -183,38 +183,37 @@ Use Case: ${useCase || "Not provided"}
         to: email,
         subject: "Thank you for requesting a demo",
         text: `
-Dear ${name},
+Thank you for your interest in P-Squared! I personally appreciate you taking the time to request a demo.
 
-Thank you for your interest in P-Squared! We've received your request for a product demonstration.
+I wanted to let you know that we've received your request and one of our team members is already reviewing it. We typically schedule demos within 1-2 business days, and we're committed to providing you with a personalized demonstration that addresses your specific needs.
 
-Our team will review your request and get back to you within 1-2 business days to schedule your personalized demo.
+We value every opportunity to showcase our solutions and look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.
 
-In the meantime, you might be interested in exploring our documentation and resources:
-- Product Documentation: https://docs.psqrd.ai
-- Case Studies: https://psqrd.ai/case-studies
-- Blog: https://psqrd.ai/blog
+Warmest regards,
 
-If you have any immediate questions, please feel free to reply to this email or call us at (555) 123-4567.
-
-We look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.
-
-Best regards,
-The P-Squared Team
+Edwin Gordon
+Founder, P-Squared
+EGORDON@PSQRD.AI
         `,
         html: `
-<h2>Thank you for requesting a demo</h2>
+<h2>Thank you for requesting a demo!</h2>
 <p>Dear ${name},</p>
-<p>Thank you for your interest in P-Squared! We've received your request for a product demonstration.</p>
-<p>Our team will review your request and get back to you within 1-2 business days to schedule your personalized demo.</p>
-<p>In the meantime, you might be interested in exploring our documentation and resources:</p>
-<ul>
-  <li><a href="https://docs.psqrd.ai">Product Documentation</a></li>
-  <li><a href="https://psqrd.ai/case-studies">Case Studies</a></li>
-  <li><a href="https://psqrd.ai/blog">Blog</a></li>
-</ul>
-<p>If you have any immediate questions, please feel free to reply to this email or call us at <strong>(555) 123-4567</strong>.</p>
-<p>We look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.</p>
-<p>Best regards,<br>The P-Squared Team</p>
+<p>Thank you for your interest in P-Squared! I personally appreciate you taking the time to request a demo.</p>
+<p>I wanted to let you know that we've received your request and one of our team members is already reviewing it. We typically schedule demos within 1-2 business days, and we're committed to providing you with a personalized demonstration that addresses your specific needs.</p>
+<p>We value every opportunity to showcase our solutions and look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.</p>
+<p>Warmest regards,</p>
+<p>
+<strong>Edwin Gordon</strong><br>
+Founder, P-Squared<br>
+<a href="mailto:EGORDON@PSQRD.AI">EGORDON@PSQRD.AI</a>
+</p>
+<hr style="margin-top: 30px; margin-bottom: 20px; border-top: 1px solid #eee;">
+<div style="font-size: 0.85em; color: #666;">
+  <p><strong>Your request details:</strong></p>
+  <p><strong>Company:</strong> ${company || "Not provided"}</p>
+  <p><strong>Industry:</strong> ${industry || "Not provided"}</p>
+  <p><strong>Use Case:</strong> ${useCase || "Not provided"}</p>
+</div>
         `,
       });
       console.log("Confirmation email sent successfully to requester!");
