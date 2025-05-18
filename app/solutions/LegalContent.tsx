@@ -8,6 +8,11 @@ export function LegalContent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
   
   const features = [
     {
@@ -46,31 +51,34 @@ export function LegalContent() {
     author: "Managing Partner, AmLaw 100 Firm"
   }
 
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
   // Handle demo request submission
-  const handleDemoRequest = async () => {
+  const handleDemoRequest = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+    
+    // Validate form
+    if (!formData.name.trim()) {
+      setSubmitError('Please enter your name')
+      return
+    }
+    
+    if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
+      setSubmitError('Please enter a valid email address')
+      return
+    }
+    
     setIsSubmitting(true)
     setSubmitError(null)
     
     try {
-      // Get user email from localStorage if available (for logged-in users)
-      // or prompt for email if not available
-      let userEmail = localStorage.getItem('userEmail')
-      
-      if (!userEmail) {
-        userEmail = window.prompt('Please enter your email to request a demo:')
-        if (!userEmail) {
-          setIsSubmitting(false)
-          return // User cancelled the prompt
-        }
-        
-        // Basic email validation
-        if (!/^\S+@\S+\.\S+$/.test(userEmail)) {
-          setSubmitError('Please enter a valid email address')
-          setIsSubmitting(false)
-          return
-        }
-      }
-      
       // Send data to the API endpoint
       const response = await fetch('/api/demo-request', {
         method: 'POST',
@@ -78,10 +86,10 @@ export function LegalContent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: localStorage.getItem('userName') || 'Prospective Client',
-          email: userEmail,
+          name: formData.name,
+          email: formData.email,
           company: localStorage.getItem('userCompany') || 'Not provided',
-          useCase: 'Legal AI Solutions - Demo Request',
+          useCase: formData.message || 'Legal AI Solutions - Demo Request',
           industry: 'Legal'
         }),
       })
@@ -95,7 +103,7 @@ export function LegalContent() {
       
       // Store the email for future use
       if (!localStorage.getItem('userEmail')) {
-        localStorage.setItem('userEmail', userEmail)
+        localStorage.setItem('userEmail', formData.email)
       }
       
     } catch (error) {
@@ -199,17 +207,92 @@ export function LegalContent() {
         </blockquote>
       </motion.div>
 
-      {/* CTA */}
-      <motion.div variants={itemVariants} className="text-center mt-8">
-        <button 
-          onClick={handleDemoRequest}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
-        >
-          Request a Demo
-        </button>
-        <p className="text-white/60 text-sm mt-2">
-          See how PSQRD can transform your legal research capabilities.
-        </p>
+      {/* Demo Request Form */}
+      <motion.div variants={itemVariants} className="mt-8">
+        <h3 className="text-xl font-semibold text-white mb-4 text-center">Request a Demo</h3>
+        
+        {submitSuccess ? (
+          <div className="flex flex-col items-center justify-center p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+            <CheckCircle className="w-12 h-12 text-green-500 mb-4" />
+            <h3 className="text-xl font-semibold text-white mb-2">Request Submitted!</h3>
+            <p className="text-white/70 mb-4">We'll contact you shortly to schedule your demo.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleDemoRequest} className="space-y-4">
+            {submitError && (
+              <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-md text-red-200 text-sm">
+                {submitError}
+              </div>
+            )}
+            
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-white/80 mb-1">
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 bg-black/30 border border-purple-500/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                placeholder="Your name"
+                required
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-1">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 bg-black/30 border border-purple-500/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                placeholder="your.email@example.com"
+                required
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-white/80 mb-1">
+                Message (Optional)
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 bg-black/30 border border-purple-500/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                placeholder="Tell us about your specific needs"
+                rows={3}
+              />
+            </div>
+            
+            <div className="pt-2">
+              <button 
+                type="submit"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader className="w-4 h-4 mr-2 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Request Demo"
+                )}
+              </button>
+              <p className="text-white/60 text-sm mt-2 text-center">
+                See how PSQRD can transform your legal research capabilities.
+              </p>
+            </div>
+          </form>
+        )}
       </motion.div>
     </motion.div>
   )
