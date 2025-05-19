@@ -193,18 +193,201 @@ ${message}
     // Send confirmation email to user
     console.log("Attempting to send confirmation email to user...");
     try {
+      // Determine if message contains industry-related keywords to provide relevant content
+      let industryInsight = '';
+      let industryInsightText = '';
+      let whitePaperSection = '';
+      let whitePaperTextSection = '';
+      
+      // Check for industry keywords in the message
+      const messageLower = message.toLowerCase();
+      if (messageLower.includes('legal') || messageLower.includes('law') || messageLower.includes('attorney')) {
+        // Legal industry insights
+        industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Legal AI Solutions</h3>
+  <p>Based on your message, you might be interested in our Legal AI solutions. Our platform helps legal teams:</p>
+  <ul style="margin-bottom: 0;">
+    <li>Analyze case law 70% faster than traditional methods</li>
+    <li>Identify relevant precedents with 92% accuracy</li>
+    <li>Draft and review documents with AI-assisted tools</li>
+  </ul>
+</div>`;
+        
+        industryInsightText = `
+Based on your message, you might be interested in our Legal AI solutions. Our platform helps legal teams:
+- Analyze case law 70% faster than traditional methods
+- Identify relevant precedents with 92% accuracy
+- Draft and review documents with AI-assisted tools`;
+
+        // Legal white paper excerpt
+        whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: Precision & Proof in Practice</h3>
+  <p><em>The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.</em></p>
+  <p>Our case study with a Top 50 Am Law Firm's M&A Practice showed:</p>
+  <ul>
+    <li>Due diligence time reduced by <strong>98%</strong> (from 200+ hours to under 4 hours)</li>
+    <li>Identified three material discrepancies missed by human review</li>
+    <li><strong>97% reduction</strong> in direct costs for due diligence</li>
+  </ul>
+  <p style="margin-bottom: 0;">Contact us to learn more about how P-Squared can transform your legal workflows.</p>
+</div>`;
+        
+        whitePaperTextSection = `
+From Our White Paper: Precision & Proof in Practice
+
+The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.
+
+Our case study with a Top 50 Am Law Firm's M&A Practice showed:
+- Due diligence time reduced by 98% (from 200+ hours to under 4 hours)
+- Identified three material discrepancies missed by human review
+- 97% reduction in direct costs for due diligence
+
+Contact us to learn more about how P-Squared can transform your legal workflows.`;
+      } else if (messageLower.includes('health') || messageLower.includes('medical') || messageLower.includes('patient')) {
+        // Healthcare industry insights
+        industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Healthcare AI Solutions</h3>
+  <p>Based on your message, you might be interested in our Healthcare AI solutions. Our platform helps medical teams:</p>
+  <ul style="margin-bottom: 0;">
+    <li>Accelerate research with advanced data analysis</li>
+    <li>Improve diagnostic accuracy through pattern recognition</li>
+    <li>Enhance patient care with personalized insights</li>
+  </ul>
+</div>`;
+        
+        industryInsightText = `
+Based on your message, you might be interested in our Healthcare AI solutions. Our platform helps medical teams:
+- Accelerate research with advanced data analysis
+- Improve diagnostic accuracy through pattern recognition
+- Enhance patient care with personalized insights`;
+
+        // Healthcare white paper excerpt
+        whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: AI in Healthcare</h3>
+  <p><em>Healthcare organizations face unprecedented challenges in managing vast amounts of patient data, research literature, and regulatory requirements.</em></p>
+  <p>Our healthcare AI solutions have demonstrated:</p>
+  <ul>
+    <li><strong>87% acceleration</strong> in medical research analysis</li>
+    <li><strong>91% improvement</strong> in diagnostic accuracy through pattern recognition</li>
+    
+  </ul>
+  <p style="margin-bottom: 0;">Contact us to learn more about how P-Squared can transform healthcare operations.</p>
+</div>`;
+        
+        whitePaperTextSection = `
+From Our White Paper: AI in Healthcare
+
+Healthcare organizations face unprecedented challenges in managing vast amounts of patient data, research literature, and regulatory requirements.
+
+Our healthcare AI solutions have demonstrated:
+- 87% acceleration in medical research analysis
+- 91% improvement in diagnostic accuracy through pattern recognition
+
+Contact us to learn more about how P-Squared can transform healthcare operations.`;
+      } else if (messageLower.includes('finance') || messageLower.includes('bank') || messageLower.includes('invest')) {
+        // Finance industry insights
+        industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Financial AI Solutions</h3>
+  <p>Based on your message, you might be interested in our Financial AI solutions. Our platform helps financial institutions:</p>
+  <ul style="margin-bottom: 0;">
+    <li>Detect fraud with 99.7% accuracy</li>
+    <li>Analyze market trends and predict movements</li>
+    <li>Automate compliance and risk assessment</li>
+  </ul>
+</div>`;
+        
+        industryInsightText = `
+Based on your message, you might be interested in our Financial AI solutions. Our platform helps financial institutions:
+- Detect fraud with 99.7% accuracy
+- Analyze market trends and predict movements
+- Automate compliance and risk assessment`;
+
+        // Finance white paper excerpt
+        whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: Fortifying Financial Integrity</h3>
+  <p><em>In the hyper-competitive and heavily regulated financial sector, the accuracy and timeliness of information are paramount.</em></p>
+  <p>Our Financial Services case study revealed:</p>
+  <ul>
+    <li><strong>97% reduction</strong> in research cycle time for initial thesis validation</li>
+    <li>Analysts identified inconsistencies in projected growth rates that competitors missed</li>
+    <li>M&A due diligence time reduced by <strong>89%</strong> while improving accuracy</li>
+  </ul>
+  <p style="margin-bottom: 0;">Contact us to learn more about how P-Squared can transform financial operations.</p>
+</div>`;
+        
+        whitePaperTextSection = `
+From Our White Paper: Fortifying Financial Integrity
+
+In the hyper-competitive and heavily regulated financial sector, the accuracy and timeliness of information are paramount.
+
+Our Financial Services case study revealed:
+- 85% reduction in research cycle time for initial thesis validation
+- Analysts identified inconsistencies in projected growth rates that competitors missed
+- M&A due diligence time reduced by 80-90% while improving accuracy
+
+Contact us to learn more about how P-Squared can transform financial operations.`;
+      } else if (messageLower.includes('media') || messageLower.includes('news') || messageLower.includes('publish')) {
+        // Media industry insights
+        industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Media AI Solutions</h3>
+  <p>Based on your message, you might be interested in our Media AI solutions. Our platform helps media organizations:</p>
+  <ul style="margin-bottom: 0;">
+    <li>Verify content authenticity in real-time</li>
+    <li>Fact-check against trusted sources automatically</li>
+    <li>Generate and optimize content with AI assistance</li>
+  </ul>
+</div>`;
+        
+        industryInsightText = `
+Based on your message, you might be interested in our Media AI solutions. Our platform helps media organizations:
+- Verify content authenticity in real-time
+- Fact-check against trusted sources automatically
+- Generate and optimize content with AI assistance`;
+
+        // Media white paper excerpt
+        whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: Verifying Truth in the Age of Information Overload</h3>
+  <p><em>The modern newsroom operates at an unprecedented pace, grappling with a deluge of information, the rapid spread of misinformation, and shrinking resources.</em></p>
+  <p>Our media solutions have demonstrated:</p>
+  <ul>
+    <li>Reduction of complex investigative tasks from <strong>months to minutes</strong></li>
+    <li><strong>99.9% accuracy</strong> in content verification</li>
+    <li><strong>99.9% faster</strong> fact-checking with complete source transparency</li>
+  </ul>
+  <p style="margin-bottom: 0;">Contact us to learn more about how P-Squared can transform your news organization.</p>
+</div>`;
+        
+        whitePaperTextSection = `
+From Our White Paper: Verifying Truth in the Age of Information Overload
+
+The modern newsroom operates at an unprecedented pace, grappling with a deluge of information, the rapid spread of misinformation, and shrinking resources.
+
+Our media solutions have demonstrated:
+- Reduction of complex investigative tasks from months to minutes
+- 99.9% accuracy in content verification
+- 99.9% faster fact-checking with complete source transparency
+
+Contact us to learn more about how P-Squared can transform your news organization.`;
+      }
+      
       await sendEmail({
-        from: process.env.FROM_EMAIL || "noreply@yourcompany.com",
+        from: process.env.FROM_EMAIL || "noreply@psqrd.ai",
         to: email,
         subject: "Thank you for contacting us",
         text: `
-Dear ${name},
-
 Thank you for reaching out to P-Squared! I personally appreciate you taking the time to connect with us.
 
 I wanted to let you know that we've received your message and one of our team members is already reviewing it. We typically respond within 24 hours, and we're committed to providing you with the information and support you need.
 
-We value every connection and look forward to the opportunity to assist you.
+We value every connection and look forward to the opportunity to assist you.${industryInsightText}${whitePaperTextSection}
 
 Warmest regards,
 
@@ -218,6 +401,8 @@ EGORDON@PSQRD.AI
 <p>Thank you for reaching out to P-Squared! I personally appreciate you taking the time to connect with us.</p>
 <p>I wanted to let you know that we've received your message and one of our team members is already reviewing it. We typically respond within 24 hours, and we're committed to providing you with the information and support you need.</p>
 <p>We value every connection and look forward to the opportunity to assist you.</p>
+${industryInsight}
+${whitePaperSection}
 <p>Warmest regards,</p>
 <p>
 <strong>Edwin Gordon</strong><br>

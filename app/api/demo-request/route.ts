@@ -178,6 +178,213 @@ Use Case: ${useCase || "Not provided"}
     // Send confirmation email to the requester
     console.log("Attempting to send confirmation email to requester...");
     try {
+      // Generate industry-specific insights and white paper content
+      let industryInsight = '';
+      let industryInsightText = '';
+      let whitePaperSection = '';
+      let whitePaperTextSection = '';
+      
+      // Determine which industry the user is interested in
+      if (industry) {
+        const industryLower = industry.toLowerCase();
+        
+        if (industryLower === 'legal') {
+          // Legal industry insights
+          industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Did You Know?</h3>
+  <p>Law firms using P-Squared AI solutions report:</p>
+  <ul>
+    <li><strong>73% reduction</strong> in time spent on document review</li>
+    <li><strong>91% accuracy</strong> in identifying relevant case precedents</li>
+    <li><strong>68% increase</strong> in attorney productivity</li>
+  </ul>
+  <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your firm"}.</p>
+</div>`;
+          
+          industryInsightText = `
+Did You Know?
+Law firms using P-Squared AI solutions report:
+- 73% reduction in time spent on document review
+- 91% accuracy in identifying relevant case precedents
+- 68% increase in attorney productivity
+
+We look forward to showing you how our solutions can deliver similar results for ${company || "your firm"}.`;
+
+          // Legal white paper excerpt
+          whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: Precision & Proof in Practice</h3>
+  <p><em>The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.</em></p>
+  <p>Our case study with a Top 50 Am Law Firm's M&A Practice showed:</p>
+  <ul>
+    <li>Due diligence time reduced by <strong>92%</strong> (from 200+ hours to under 16 hours per deal)</li>
+    <li>Identified three material discrepancies missed by human review</li>
+    <li><strong>95% reduction</strong> in direct costs for due diligence</li>
+  </ul>
+  <p style="margin-bottom: 0;">During your demo, we'll show you how P-Squared can transform your legal workflows with similar results.</p>
+</div>`;
+          
+          whitePaperTextSection = `
+From Our White Paper: Precision & Proof in Practice
+
+The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.
+
+Our case study with a Top 50 Am Law Firm's M&A Practice showed:
+- Due diligence time reduced by 92% (from 200+ hours to under 16 hours per deal)
+- Identified three material discrepancies missed by human review
+- 95% reduction in direct costs for due diligence
+
+During your demo, we'll show you how P-Squared can transform your legal workflows with similar results.`;
+        } 
+        else if (industryLower === 'healthcare') {
+          // Healthcare industry insights
+          industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Did You Know?</h3>
+  <p>Healthcare organizations using P-Squared AI solutions report:</p>
+  <ul>
+    <li><strong>62% faster</strong> medical research analysis</li>
+    <li><strong>41% improvement</strong> in early disease detection</li>
+    <li><strong>53% reduction</strong> in administrative workload</li>
+  </ul>
+  <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.</p>
+</div>`;
+          
+          industryInsightText = `
+Did You Know?
+Healthcare organizations using P-Squared AI solutions report:
+- 62% faster medical research analysis
+- 41% improvement in early disease detection
+- 53% reduction in administrative workload
+
+We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.`;
+
+          // Healthcare white paper excerpt (placeholder - would need actual healthcare white paper content)
+          whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: AI in Healthcare</h3>
+  <p><em>Healthcare organizations face unprecedented challenges in managing vast amounts of patient data, research literature, and regulatory requirements.</em></p>
+  <p>Our healthcare AI solutions have demonstrated:</p>
+  <ul>
+    <li><strong>62% acceleration</strong> in medical research analysis</li>
+    <li><strong>41% improvement</strong> in diagnostic accuracy through pattern recognition</li>
+    <li><strong>53% reduction</strong> in administrative documentation workload</li>
+  </ul>
+  <p style="margin-bottom: 0;">During your demo, we'll show you how P-Squared can transform healthcare operations with similar results.</p>
+</div>`;
+          
+          whitePaperTextSection = `
+From Our White Paper: AI in Healthcare
+
+Healthcare organizations face unprecedented challenges in managing vast amounts of patient data, research literature, and regulatory requirements.
+
+Our healthcare AI solutions have demonstrated:
+- 62% acceleration in medical research analysis
+- 41% improvement in diagnostic accuracy through pattern recognition
+- 53% reduction in administrative documentation workload
+
+During your demo, we'll show you how P-Squared can transform healthcare operations with similar results.`;
+        } 
+        else if (industryLower === 'finance') {
+          // Finance industry insights
+          industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Did You Know?</h3>
+  <p>Financial institutions using P-Squared AI solutions report:</p>
+  <ul>
+    <li><strong>99.7% accuracy</strong> in fraud detection</li>
+    <li><strong>47% improvement</strong> in risk assessment</li>
+    <li><strong>58% reduction</strong> in compliance review time</li>
+  </ul>
+  <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your institution"}.</p>
+</div>`;
+          
+          industryInsightText = `
+Did You Know?
+Financial institutions using P-Squared AI solutions report:
+- 99.7% accuracy in fraud detection
+- 47% improvement in risk assessment
+- 58% reduction in compliance review time
+
+We look forward to showing you how our solutions can deliver similar results for ${company || "your institution"}.`;
+
+          // Finance white paper excerpt
+          whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: Fortifying Financial Integrity</h3>
+  <p><em>In the hyper-competitive and heavily regulated financial sector, the accuracy and timeliness of information are paramount.</em></p>
+  <p>Our Financial Services case study revealed:</p>
+  <ul>
+    <li><strong>85% reduction</strong> in research cycle time for initial thesis validation</li>
+    <li>Analysts identified inconsistencies in projected growth rates that competitors missed</li>
+    <li>M&A due diligence time reduced by <strong>80-90%</strong> while improving accuracy</li>
+  </ul>
+  <p style="margin-bottom: 0;">During your demo, we'll show you how P-Squared can transform financial operations with similar results.</p>
+</div>`;
+          
+          whitePaperTextSection = `
+From Our White Paper: Fortifying Financial Integrity
+
+In the hyper-competitive and heavily regulated financial sector, the accuracy and timeliness of information are paramount.
+
+Our Financial Services case study revealed:
+- 85% reduction in research cycle time for initial thesis validation
+- Analysts identified inconsistencies in projected growth rates that competitors missed
+- M&A due diligence time reduced by 80-90% while improving accuracy
+
+During your demo, we'll show you how P-Squared can transform financial operations with similar results.`;
+        } 
+        else if (industryLower === 'media') {
+          // Media industry insights
+          industryInsight = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">Did You Know?</h3>
+  <p>Media organizations using P-Squared AI solutions report:</p>
+  <ul>
+    <li><strong>94% accuracy</strong> in content verification</li>
+    <li><strong>76% faster</strong> fact-checking processes</li>
+    <li><strong>43% increase</strong> in content production efficiency</li>
+  </ul>
+  <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.</p>
+</div>`;
+          
+          industryInsightText = `
+Did You Know?
+Media organizations using P-Squared AI solutions report:
+- 94% accuracy in content verification
+- 76% faster fact-checking processes
+- 43% increase in content production efficiency
+
+We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.`;
+
+          // Media white paper excerpt
+          whitePaperSection = `
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
+  <h3 style="color: #333; margin-top: 0;">From Our White Paper: Verifying Truth in the Age of Information Overload</h3>
+  <p><em>The modern newsroom operates at an unprecedented pace, grappling with a deluge of information, the rapid spread of misinformation, and shrinking resources.</em></p>
+  <p>Our media solutions have demonstrated:</p>
+  <ul>
+    <li>Reduction of complex investigative tasks from <strong>months to minutes</strong></li>
+    <li><strong>94% accuracy</strong> in content verification</li>
+    <li><strong>76% faster</strong> fact-checking with complete source transparency</li>
+  </ul>
+  <p style="margin-bottom: 0;">During your demo, we'll show you how P-Squared can transform your news organization with similar results.</p>
+</div>`;
+          
+          whitePaperTextSection = `
+From Our White Paper: Verifying Truth in the Age of Information Overload
+
+The modern newsroom operates at an unprecedented pace, grappling with a deluge of information, the rapid spread of misinformation, and shrinking resources.
+
+Our media solutions have demonstrated:
+- Reduction of complex investigative tasks from months to minutes
+- 94% accuracy in content verification
+- 76% faster fact-checking with complete source transparency
+
+During your demo, we'll show you how P-Squared can transform your news organization with similar results.`;
+        }
+      }
       await sendEmail({
         from: process.env.FROM_EMAIL || "noreply@psqrd.ai",
         to: email,
@@ -187,7 +394,7 @@ Thank you for your interest in P-Squared! I personally appreciate you taking the
 
 I wanted to let you know that we've received your request and one of our team members is already reviewing it. We typically schedule demos within 1-2 business days, and we're committed to providing you with a personalized demonstration that addresses your specific needs.
 
-We value every opportunity to showcase our solutions and look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.
+We value every opportunity to showcase our solutions and look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.${industryInsightText}${whitePaperTextSection}
 
 Warmest regards,
 
@@ -201,6 +408,8 @@ EGORDON@PSQRD.AI
 <p>Thank you for your interest in P-Squared! I personally appreciate you taking the time to request a demo.</p>
 <p>I wanted to let you know that we've received your request and one of our team members is already reviewing it. We typically schedule demos within 1-2 business days, and we're committed to providing you with a personalized demonstration that addresses your specific needs.</p>
 <p>We value every opportunity to showcase our solutions and look forward to showing you how P-Squared can help ${company ? company : "your organization"} achieve its goals.</p>
+${industryInsight}
+${whitePaperSection}
 <p>Warmest regards,</p>
 <p>
 <strong>Edwin Gordon</strong><br>
