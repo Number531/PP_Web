@@ -195,9 +195,9 @@ Use Case: ${useCase || "Not provided"}
   <h3 style="color: #333; margin-top: 0;">Did You Know?</h3>
   <p>Law firms using P-Squared AI solutions report:</p>
   <ul>
-    <li><strong>73% reduction</strong> in time spent on document review</li>
-    <li><strong>91% accuracy</strong> in identifying relevant case precedents</li>
-    <li><strong>68% increase</strong> in attorney productivity</li>
+    <li><strong>97% reduction</strong> in time spent on document review</li>
+    <li><strong>98% accuracy</strong> in identifying relevant case precedents</li>
+    <li><strong>99% increase</strong> in attorney due diligence productivity</li>
   </ul>
   <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your firm"}.</p>
 </div>`;
@@ -205,9 +205,9 @@ Use Case: ${useCase || "Not provided"}
           industryInsightText = `
 Did You Know?
 Law firms using P-Squared AI solutions report:
-- 73% reduction in time spent on document review
-- 91% accuracy in identifying relevant case precedents
-- 68% increase in attorney productivity
+- 97% reduction in time spent on document review
+- 98% accuracy in identifying relevant case precedents
+- 99% increase in attorney due diligence productivity
 
 We look forward to showing you how our solutions can deliver similar results for ${company || "your firm"}.`;
 
@@ -216,11 +216,11 @@ We look forward to showing you how our solutions can deliver similar results for
 <div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
   <h3 style="color: #333; margin-top: 0;">From Our White Paper: Precision & Proof in Practice</h3>
   <p><em>The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.</em></p>
-  <p>Our case study with a Top 50 Am Law Firm's M&A Practice showed:</p>
+  <p>Our case study with a Top 50 Law Firm's M&A Practice showed:</p>
   <ul>
-    <li>Due diligence time reduced by <strong>92%</strong> (from 200+ hours to under 16 hours per deal)</li>
-    <li>Identified three material discrepancies missed by human review</li>
-    <li><strong>95% reduction</strong> in direct costs for due diligence</li>
+    <li>Due diligence time reduced by <strong>97%</strong> (from 200+ hours to under 6 hours per deal)</li>
+    <li>Identified critical material disclosures with <strong>98%</strong> accuracy</li>
+    <li><strong>99%</strong> increase in attorney productivity for complex due diligence tasks</li>
   </ul>
   <p style="margin-bottom: 0;">During your demo, we'll show you how P-Squared can transform your legal workflows with similar results.</p>
 </div>`;
@@ -230,10 +230,10 @@ From Our White Paper: Precision & Proof in Practice
 
 The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.
 
-Our case study with a Top 50 Am Law Firm's M&A Practice showed:
-- Due diligence time reduced by 92% (from 200+ hours to under 16 hours per deal)
-- Identified three material discrepancies missed by human review
-- 95% reduction in direct costs for due diligence
+Our case study with a Top 50 Law Firm's M&A Practice showed:
+- Due diligence time reduced by 97% (from 200+ hours to under 6 hours per deal)
+- Identified critical material disclosures with 98% accuracy
+- 99% increase in attorney productivity for complex due diligence tasks
 
 During your demo, we'll show you how P-Squared can transform your legal workflows with similar results.`;
         } 

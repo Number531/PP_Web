@@ -208,41 +208,41 @@ ${message}
   <h3 style="color: #333; margin-top: 0;">Legal AI Solutions</h3>
   <p>Based on your message, you might be interested in our Legal AI solutions. Our platform helps legal teams:</p>
   <ul style="margin-bottom: 0;">
-    <li>Analyze case law 70% faster than traditional methods</li>
-    <li>Identify relevant precedents with 92% accuracy</li>
-    <li>Draft and review documents with AI-assisted tools</li>
+    <li>Reduce document review time by 97%</li>
+    <li>Identify relevant case precedents with 98% accuracy</li>
+    <li>Increase attorney due diligence productivity by 99%</li>
   </ul>
 </div>`;
         
         industryInsightText = `
 Based on your message, you might be interested in our Legal AI solutions. Our platform helps legal teams:
-- Analyze case law 70% faster than traditional methods
-- Identify relevant precedents with 92% accuracy
-- Draft and review documents with AI-assisted tools`;
+- Reduce document review time by 97%
+- Identify relevant case precedents with 98% accuracy
+- Increase attorney due diligence productivity by 99%`;
 
         // Legal white paper excerpt
         whitePaperSection = `
 <div style="margin-top: 30px; padding: 20px; background-color: #f0f4f8; border: 1px solid #d0d9e6; border-radius: 8px;">
   <h3 style="color: #333; margin-top: 0;">From Our White Paper: Precision & Proof in Practice</h3>
   <p><em>The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.</em></p>
-  <p>Our case study with a Top 50 Am Law Firm's M&A Practice showed:</p>
+  <p>Our case study with a Top 50 Law Firm's M&A Practice showed:</p>
   <ul>
-    <li>Due diligence time reduced by <strong>98%</strong> (from 200+ hours to under 4 hours)</li>
-    <li>Identified three material discrepancies missed by human review</li>
-    <li><strong>97% reduction</strong> in direct costs for due diligence</li>
+    <li>Due diligence time reduced by 97% (from 200+ hours to under 6 hours per deal)</li>
+    <li>Identified critical material disclosures with 98% accuracy</li>
+    <li>99% increase in attorney productivity for complex due diligence tasks</li>
   </ul>
   <p style="margin-bottom: 0;">Contact us to learn more about how P-Squared can transform your legal workflows.</p>
 </div>`;
-        
+
         whitePaperTextSection = `
 From Our White Paper: Precision & Proof in Practice
 
 The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.
 
-Our case study with a Top 50 Am Law Firm's M&A Practice showed:
-- Due diligence time reduced by 98% (from 200+ hours to under 4 hours)
-- Identified three material discrepancies missed by human review
-- 97% reduction in direct costs for due diligence
+Our case study with a Top 50 Law Firm's M&A Practice showed:
+- Due diligence time reduced by 97% (from 200+ hours to under 6 hours per deal)
+- Identified critical material disclosures with 98% accuracy
+- 99% increase in attorney productivity for complex due diligence tasks
 
 Contact us to learn more about how P-Squared can transform your legal workflows.`;
       } else if (messageLower.includes('health') || messageLower.includes('medical') || messageLower.includes('patient')) {
