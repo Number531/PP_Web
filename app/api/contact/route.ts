@@ -227,7 +227,7 @@ Based on your message, you might be interested in our Legal AI solutions. Our pl
   <p><em>The legal profession operates under an immense burden of information, demanding meticulous accuracy where errors can have profound consequences.</em></p>
   <p>Our case study with a Top 50 Law Firm's M&A Practice showed:</p>
   <ul>
-    <li>Due diligence time reduced by 97% (from 200+ hours to under 6 hours per deal)</li>
+    <li>Due diligence time reduced by 97% (from 200+ hours to under 6 hours per case)</li>
     <li>Identified critical material disclosures with 98% accuracy</li>
     <li>99% increase in attorney productivity for complex due diligence tasks</li>
   </ul>
