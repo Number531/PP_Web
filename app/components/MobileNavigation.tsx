@@ -70,13 +70,13 @@ export function MobileNavigation() {
     <>
       {/* Mobile menu toggle button */}
       <button
-        className="md:hidden flex items-center justify-center w-10 h-10 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+        className="md:hidden flex items-center justify-center w-9 h-9 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
         onClick={handleToggleClick}
         aria-expanded={isOpen}
         aria-label="Toggle mobile menu"
       >
-        <Menu className={`w-6 h-6 ${isOpen ? "hidden" : "block"}`} />
-        <X className={`w-6 h-6 ${isOpen ? "block" : "hidden"}`} />
+        <Menu className={`w-5 h-5 ${isOpen ? "hidden" : "block"}`} />
+        <X className={`w-5 h-5 ${isOpen ? "block" : "hidden"}`} />
       </button>
 
       {/* Mobile menu overlay */}

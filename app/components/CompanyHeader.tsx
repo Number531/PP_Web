@@ -70,45 +70,51 @@ export const CompanyHeader = memo(function CompanyHeader() {
   return (
     <>
       <motion.div
-        className={`fixed top-0 left-0 w-full z-40 p-4 md:p-6 transition-all duration-300 pointer-events-auto ${
+        className={`fixed top-0 left-0 w-full z-40 p-3 md:p-6 transition-all duration-300 pointer-events-auto ${
           scrolled ? "bg-black/60 backdrop-blur-md shadow-lg" : "bg-black/30"
         }`}
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
       >
-        <div className="container mx-auto flex items-center justify-between">
+        <div className="container mx-auto relative">
           {pathname !== "/chat" && (
             <>
-              <div className="flex items-center">
-                <Link href="/" className="text-2xl font-semibold text-white flex items-center tracking-tight">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600">
-                    PSQRD
-                  </span>
-                </Link>
-              </div>
+              {/* Three-column layout for mobile */}
+              <div className="grid grid-cols-3 items-center md:flex md:justify-between">
+                {/* Logo - Left column */}
+                <div className="col-span-1 flex items-center">
+                  <Link href="/" className="text-xl md:text-2xl font-semibold text-white flex items-center tracking-tight">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600">
+                      PSQRD
+                    </span>
+                  </Link>
+                </div>
+                
+                {/* Mobile Navigation - Center column, only on mobile */}
+                <div className="col-span-1 flex justify-center md:hidden">
+                  <MobileNavigation />
+                </div>
 
-              {/* Mobile Navigation */}
-              <div className="flex items-center gap-4 relative z-50 pointer-events-auto">
-                <MobileNavigation />
-
-                {/* Login/Logout Button */}
-                {isAuthenticated ? (
-                  <button
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors pointer-events-auto relative z-50"
-                    onClick={logout}
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <button
-                    className="px-4 py-2 text-lg font-semibold tracking-tight transition-all pointer-events-auto relative z-50 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-300 hover:to-purple-500"
-                    aria-label="Request a demo"
-                    onClick={() => setIsLoginModalOpen(true)}
-                  >
-                    Request Demo
-                  </button>
-                )}
+                {/* Login/Logout Button - Right column */}
+                <div className="col-span-1 flex justify-end items-center relative z-50 pointer-events-auto">
+                  {isAuthenticated ? (
+                    <button
+                      className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors pointer-events-auto relative z-50"
+                      onClick={logout}
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <button
+                      className="px-3 py-2 text-base md:text-lg font-semibold tracking-tight transition-all pointer-events-auto relative z-50 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-300 hover:to-purple-500"
+                      aria-label="Request a demo"
+                      onClick={() => setIsLoginModalOpen(true)}
+                    >
+                      Request Demo
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Desktop Navigation */}
