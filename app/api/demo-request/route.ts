@@ -244,9 +244,9 @@ During your demo, we'll show you how P-Squared can transform your legal workflow
   <h3 style="color: #333; margin-top: 0;">Did You Know?</h3>
   <p>Healthcare organizations using P-Squared AI solutions report:</p>
   <ul>
-    <li><strong>62% faster</strong> medical research analysis</li>
+    <li><strong>94% faster</strong> medical research analysis</li>
     <li><strong>41% improvement</strong> in early disease detection</li>
-    <li><strong>53% reduction</strong> in administrative workload</li>
+    <li><strong>93% reduction</strong> in administrative workload</li>
   </ul>
   <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.</p>
 </div>`;
@@ -254,9 +254,9 @@ During your demo, we'll show you how P-Squared can transform your legal workflow
           industryInsightText = `
 Did You Know?
 Healthcare organizations using P-Squared AI solutions report:
-- 62% faster medical research analysis
+- 94% faster medical research analysis
 - 41% improvement in early disease detection
-- 53% reduction in administrative workload
+- 93% reduction in administrative workload
 
 We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.`;
 
@@ -267,9 +267,9 @@ We look forward to showing you how our solutions can deliver similar results for
   <p><em>Healthcare organizations face unprecedented challenges in managing vast amounts of patient data, research literature, and regulatory requirements.</em></p>
   <p>Our healthcare AI solutions have demonstrated:</p>
   <ul>
-    <li><strong>62% acceleration</strong> in medical research analysis</li>
-    <li><strong>41% improvement</strong> in diagnostic accuracy through pattern recognition</li>
-    <li><strong>53% reduction</strong> in administrative documentation workload</li>
+    <li><strong>94% acceleration</strong> in medical research analysis</li>
+    <li><strong>41% improvement</strong> in diagnostic accuracy</li>
+    <li><strong>93% reduction</strong> in administrative documentation workload</li>
   </ul>
   <p style="margin-bottom: 0;">During your demo, we'll show you how P-Squared can transform healthcare operations with similar results.</p>
 </div>`;
@@ -280,9 +280,9 @@ From Our White Paper: AI in Healthcare
 Healthcare organizations face unprecedented challenges in managing vast amounts of patient data, research literature, and regulatory requirements.
 
 Our healthcare AI solutions have demonstrated:
-- 62% acceleration in medical research analysis
-- 41% improvement in diagnostic accuracy through pattern recognition
-- 53% reduction in administrative documentation workload
+- 94% acceleration in medical research analysis
+- 41% improvement in diagnostic accuracy
+- 93% reduction in administrative documentation workload
 
 During your demo, we'll show you how P-Squared can transform healthcare operations with similar results.`;
         } 
@@ -344,7 +344,7 @@ During your demo, we'll show you how P-Squared can transform financial operation
   <ul>
     <li><strong>94% accuracy</strong> in content verification</li>
     <li><strong>76% faster</strong> fact-checking processes</li>
-    <li><strong>43% increase</strong> in content production efficiency</li>
+    <li><strong>97% increase</strong> in content production efficiency</li>
   </ul>
   <p style="margin-bottom: 0;">We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.</p>
 </div>`;
@@ -354,7 +354,7 @@ Did You Know?
 Media organizations using P-Squared AI solutions report:
 - 94% accuracy in content verification
 - 76% faster fact-checking processes
-- 43% increase in content production efficiency
+- 97% increase in content production efficiency
 
 We look forward to showing you how our solutions can deliver similar results for ${company || "your organization"}.`;
 
