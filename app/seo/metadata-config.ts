@@ -28,9 +28,7 @@ export const siteConfig = {
   },
   // Social media links for the organization
   socialLinks: {
-    twitter: "https://twitter.com/psqrd_ai",
     linkedin: "https://linkedin.com/company/psqrd-ai",
-    github: "https://github.com/psqrd-ai",
     instagram: "https://instagram.com/psqrd_ai",
     youtube: "https://youtube.com/c/psqrdai"
   },

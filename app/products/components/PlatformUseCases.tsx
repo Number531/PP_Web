@@ -70,7 +70,7 @@ export function PlatformUseCases() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-lg p-6"
+              className="bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-lg p-6 flex flex-col h-full"
             >
               <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                 <useCase.icon className="w-6 h-6 text-purple-400" />
@@ -83,11 +83,11 @@ export function PlatformUseCases() {
                   </span>
                 )}
               </h3>
-              <p className="text-white/70 mb-4">{useCase.description}</p>
+              <p className="text-white/70 mb-4 flex-grow">{useCase.description}</p>
 
               <button
                 onClick={() => setActivePopup(useCase.link.split('/').pop() || null)}
-                className="text-purple-400 hover:text-purple-300 flex items-center gap-1 text-sm font-medium transition-colors bg-transparent border-0 p-0 cursor-pointer"
+                className="text-purple-400 hover:text-purple-300 flex items-center gap-1 text-sm font-medium transition-colors bg-transparent border-0 p-0 cursor-pointer mt-auto"
               >
                 Learn more
                 <ArrowRight className="w-4 h-4" />

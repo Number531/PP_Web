@@ -171,9 +171,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "url": "${siteConfig.url}",
               "logo": "${siteConfig.url}/logo.svg",
               "sameAs": [
-                "${siteConfig.socialLinks.twitter}",
-                "${siteConfig.socialLinks.linkedin}",
-                "${siteConfig.socialLinks.github}"
+                "${siteConfig.socialLinks.linkedin}"
               ],
               "contactPoint": {
                 "@type": "ContactPoint",

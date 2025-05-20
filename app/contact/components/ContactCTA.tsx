@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Twitter, Linkedin, Github } from "lucide-react"
+import { ArrowRight, Linkedin } from "lucide-react"
 import Link from "next/link"
 
 export function ContactCTA() {
@@ -22,17 +22,6 @@ export function ContactCTA() {
 
           <div className="flex justify-center gap-6 mb-10">
             <motion.a
-              href="https://twitter.com/psqrd_ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-black/20 p-4 rounded-full border border-purple-500/20 hover:border-purple-500/50 transition-colors"
-              aria-label="Twitter"
-            >
-              <Twitter className="w-6 h-6 text-purple-400" />
-            </motion.a>
-            <motion.a
               href="https://linkedin.com/company/psqrd-ai"
               target="_blank"
               rel="noopener noreferrer"
@@ -42,17 +31,6 @@ export function ContactCTA() {
               aria-label="LinkedIn"
             >
               <Linkedin className="w-6 h-6 text-purple-400" />
-            </motion.a>
-            <motion.a
-              href="https://github.com/psqrd-ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-black/20 p-4 rounded-full border border-purple-500/20 hover:border-purple-500/50 transition-colors"
-              aria-label="GitHub"
-            >
-              <Github className="w-6 h-6 text-purple-400" />
             </motion.a>
           </div>
 
