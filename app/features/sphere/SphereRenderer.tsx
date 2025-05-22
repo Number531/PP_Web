@@ -1,10 +1,11 @@
 "use client"
 
-import { memo, useCallback, Suspense } from "react"
+import { memo, useCallback, Suspense, useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import { EffectComposer, Bloom } from "@react-three/postprocessing"
+import { ErrorBoundary } from "react-error-boundary"
 import { CAMERA_CONFIG } from "@/app/shared/config/camera-config"
 import { PRODUCT_FEATURES } from "@/app/shared/data/company-content"
 import type { ProductFeature } from "@/app/shared/types"
@@ -47,22 +48,42 @@ export function SphereRenderer({
 }: SphereRendererProps) {
   const isMobile = useMobile()
 
+  const [canRender, setCanRender] = useState(false)
+
+  // Only render on client side after component has mounted
+  useEffect(() => {
+    setCanRender(true)
+  }, [])
+
+  // Fallback for errors
+  const fallbackRender = () => (
+    <div className="w-full h-full flex items-center justify-center text-white/70">
+      <p>Unable to load 3D visualization</p>
+    </div>
+  )
+
+  if (!canRender) {
+    return null
+  }
+
   return (
-    <Canvas
-      camera={{ position: CAMERA_CONFIG.INITIAL_POSITION, far: CAMERA_CONFIG.FAR }}
-      dpr={[1, isMobile ? 1.5 : 2]} // Limit pixel ratio for better performance
-      performance={{ min: 0.5 }} // Allow ThreeJS to reduce quality if needed
-    >
-      <Suspense fallback={null}>
-        <SceneContent
-          explosionProgress={explosionProgress}
-          explorerMode={explorerMode}
-          scrollProgress={scrollProgress}
-          onSelectFeature={onSelectFeature}
-          selectedFeatureId={selectedFeatureId}
-        />
-      </Suspense>
-    </Canvas>
+    <ErrorBoundary fallbackRender={fallbackRender}>
+      <Canvas
+        camera={{ position: CAMERA_CONFIG.INITIAL_POSITION, far: CAMERA_CONFIG.FAR }}
+        dpr={[1, isMobile ? 1.5 : 2]} // Limit pixel ratio for better performance
+        performance={{ min: 0.5 }} // Allow ThreeJS to reduce quality if needed
+      >
+        <Suspense fallback={null}>
+          <SceneContent
+            explosionProgress={explosionProgress}
+            explorerMode={explorerMode}
+            scrollProgress={scrollProgress}
+            onSelectFeature={onSelectFeature}
+            selectedFeatureId={selectedFeatureId}
+          />
+        </Suspense>
+      </Canvas>
+    </ErrorBoundary>
   )
 }
 

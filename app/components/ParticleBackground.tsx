@@ -1,11 +1,12 @@
 "use client"
 
-import { Suspense, useRef, useMemo } from "react"
+import { Suspense, useRef, useMemo, useEffect, useState } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import { EffectComposer, Bloom } from "@react-three/postprocessing"
 import { useMobile } from "@/hooks/use-mobile"
 import * as THREE from "three"
+import { ClientOnly } from "@/app/shared/components/ClientOnly"
 
 // Define constants directly in the component to avoid import issues
 const CAMERA_CONFIG = {
@@ -193,29 +194,34 @@ export function ParticleBackground() {
 
   return (
     <div className="fixed inset-0 z-0">
-      <Canvas
-        ref={canvasRef}
-        camera={{
-          position: [0, 5, 30],
-          fov: CAMERA_CONFIG.FOV,
-          near: CAMERA_CONFIG.NEAR,
-          far: CAMERA_CONFIG.FAR,
-        }}
-        gl={{
-          antialias: false,
-          powerPreference: "high-performance",
-          stencil: false,
-          depth: false,
-        }}
-        dpr={[1, 1.5]} // Limit DPR for better performance
-      >
-        <Suspense fallback={null}>
-          <GalaxyScene />
-          <EffectComposer>
-            <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} intensity={0.5} />
-          </EffectComposer>
-        </Suspense>
-      </Canvas>
+      <ClientOnly fallback={
+        <div className="w-full h-full bg-black" />
+      }>
+        <Canvas
+          ref={canvasRef}
+          camera={{
+            position: [0, 5, 30],
+            fov: CAMERA_CONFIG.FOV,
+            near: CAMERA_CONFIG.NEAR,
+            far: CAMERA_CONFIG.FAR,
+          }}
+          gl={{
+            antialias: false,
+            powerPreference: "high-performance",
+            stencil: false,
+            depth: false,
+          }}
+          dpr={[1, 1.5]} // Limit DPR for better performance
+          suppressHydrationWarning
+        >
+          <Suspense fallback={null}>
+            <GalaxyScene />
+            <EffectComposer>
+              <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} intensity={0.5} />
+            </EffectComposer>
+          </Suspense>
+        </Canvas>
+      </ClientOnly>
     </div>
   )
 }

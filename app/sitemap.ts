@@ -42,6 +42,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ]
     },
     {
+      path: '/blog',
+      lastModified: new Date('2025-05-20'),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+      images: [
+        {
+          url: `${baseUrl}/images/blog/ai-hallucination.jpg`,
+          title: 'AI Hallucination Prevention Blog',
+          caption: 'Insights on AI hallucination prevention and solutions'
+        }
+      ]
+    },
+    {
       path: '/about',
       lastModified: new Date('2025-04-10'),
       changeFrequency: 'monthly',

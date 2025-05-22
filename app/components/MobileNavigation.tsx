@@ -11,6 +11,7 @@ import { useMobile } from "@/app/shared/hooks/use-mobile"
 const navigationLinks = [
   { href: "/about", label: "About" },
   { href: "/products", label: "Platform" },
+  { href: "/blog", label: "Blog" },
   { href: "/careers", label: "Careers" },
   { href: "/contact", label: "Contact" },
 ]
