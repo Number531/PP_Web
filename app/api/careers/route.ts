@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getMicrosoftTokens } from "@/lib/auth/microsoft-oauth"
+import { getPositionSpecificContent, generateCareerEmailHtml, generateCareerEmailText } from "@/lib/email/career-templates"
 
 /**
  * Send email directly using Microsoft Graph API
@@ -224,39 +225,32 @@ ${coverLetterFile ? "<p><strong>Cover Letter:</strong> Attached</p>" : ""}
     // Send confirmation email to applicant
     console.log("Attempting to send confirmation email to applicant...");
     try {
+      // Get position-specific content based on job title
+      const positionInfo = getPositionSpecificContent(jobTitle);
+      
+      // Generate email content using templates
+      const htmlContent = generateCareerEmailHtml(
+        name,
+        jobTitle,
+        resumeFile.name,
+        coverLetterFile ? coverLetterFile.name : null,
+        positionInfo
+      );
+      
+      const textContent = generateCareerEmailText(
+        name,
+        jobTitle,
+        resumeFile.name,
+        coverLetterFile ? coverLetterFile.name : null,
+        positionInfo
+      );
+      
       await sendEmail({
-        from: process.env.FROM_EMAIL || "noreply@yourcompany.com",
+        from: process.env.FROM_EMAIL || "noreply@psqrd.ai",
         to: email,
-        subject: `Thank you for applying to ${jobTitle}`,
-        text: `
-Dear ${name},
-
-Thank you for applying to the ${jobTitle} position at P-Squared. We appreciate your interest in joining our team.
-
-We've received your application and our recruiting team is reviewing it now. If your qualifications match our needs, we'll contact you to schedule an initial interview.
-
-For your reference, here's a summary of your application:
-- Position: ${jobTitle}
-- Resume: ${resumeFile.name}
-${coverLetterFile ? `- Cover Letter: ${coverLetterFile.name}` : ''}
-
-If you have any questions about your application or our hiring process, please feel free to reply to this email.
-
-Best regards,
-The P-Squared Recruiting Team
-        `,
-        html: `
-<h2>Thank you for your application</h2>
-<p>Dear ${name},</p>
-<p>Thank you for applying to the <strong>${jobTitle}</strong> position at P-Squared. We appreciate your interest in joining our team.</p>
-<p>We've received your application and our recruiting team is reviewing it now. If your qualifications match our needs, we'll contact you to schedule an initial interview.</p>
-<h3>For your reference:</h3>
-<p><strong>Position:</strong> ${jobTitle}</p>
-<p><strong>Resume:</strong> ${resumeFile.name}</p>
-${coverLetterFile ? `<p><strong>Cover Letter:</strong> ${coverLetterFile.name}</p>` : ''}
-<p>If you have any questions about your application or our hiring process, please feel free to reply to this email.</p>
-<p>Best regards,<br>The P-Squared Recruiting Team</p>
-        `
+        subject: `Thank you for applying to ${jobTitle} at P-Squared`,
+        text: textContent,
+        html: htmlContent
       });
       console.log("Confirmation email sent successfully to applicant!");
     } catch (confirmationError) {
