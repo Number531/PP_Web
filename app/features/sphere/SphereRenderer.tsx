@@ -4,7 +4,8 @@ import { memo, useCallback, Suspense, useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
-import { EffectComposer, Bloom } from "@react-three/postprocessing"
+import { Bloom } from "@react-three/postprocessing"
+import { SafeComposer } from "@/app/shared/components/SafeComposer"
 import { ErrorBoundary } from "react-error-boundary"
 import { CAMERA_CONFIG } from "@/app/shared/config/camera-config"
 import { PRODUCT_FEATURES } from "@/app/shared/data/company-content"
@@ -142,9 +143,9 @@ const SceneContent = memo(function SceneContent({
 
       {/* Only use effects on non-mobile devices */}
       {!isMobile && (
-        <EffectComposer>
+        <SafeComposer>
           <Bloom {...bloomProps} />
-        </EffectComposer>
+        </SafeComposer>
       )}
     </>
   )

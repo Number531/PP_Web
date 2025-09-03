@@ -4,7 +4,8 @@ import { useRef, useMemo, useState, useEffect } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
-import { EffectComposer, Bloom } from "@react-three/postprocessing"
+import { Bloom } from "@react-three/postprocessing"
+import { SafeComposer } from "@/app/shared/components/SafeComposer"
 import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
 import { InfoOverlay } from "./info-overlay"
@@ -214,9 +215,9 @@ function Scene({
     <>
       <HollowSphere onProductSelect={onProductSelect} explosionProgress={explosionProgress} />
       <OrbitControls enableZoom={true} minDistance={2} maxDistance={100} />
-      <EffectComposer>
+      <SafeComposer>
         <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
-      </EffectComposer>
+      </SafeComposer>
     </>
   )
 }

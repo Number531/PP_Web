@@ -120,8 +120,6 @@ export function generateEnhancedSEO({
     },
     
     // Other metadata
-    viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
-    themeColor: '#6D28D9', // Purple theme color
     category: section || 'Technology',
   }
 }

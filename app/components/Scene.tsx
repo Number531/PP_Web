@@ -3,7 +3,8 @@
 import { useEffect, memo } from "react"
 import { useThree } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
-import { EffectComposer, Bloom } from "@react-three/postprocessing"
+import { Bloom } from "@react-three/postprocessing"
+import { SafeComposer } from "@/app/shared/components/SafeComposer"
 import { HollowSphere } from "./HollowSphere"
 import { NewGalaxy } from "./NewGalaxy"
 import { FeatureMarkers } from "./FeatureMarkers"
@@ -52,9 +53,9 @@ export const Scene = memo(function Scene({
         enableDamping={true}
         dampingFactor={0.05}
       />
-      <EffectComposer>
+      <SafeComposer>
         <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
-      </EffectComposer>
+      </SafeComposer>
     </>
   )
 })

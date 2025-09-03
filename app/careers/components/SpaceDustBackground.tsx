@@ -3,7 +3,8 @@
 import { useRef, useMemo } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
-import { EffectComposer, Bloom } from "@react-three/postprocessing"
+import { Bloom } from "@react-three/postprocessing"
+import { SafeComposer } from "@/app/shared/components/SafeComposer"
 import { OrbitControls } from "@react-three/drei"
 import { useMobile } from "@/hooks/use-mobile"
 
@@ -135,9 +136,9 @@ export function SpaceDustBackground({ explosionProgress }: SpaceDustProps) {
         rotateSpeed={0.5}
       />
       {!isMobile && (
-        <EffectComposer>
+        <SafeComposer>
           <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} intensity={0.8} />
-        </EffectComposer>
+        </SafeComposer>
       )}
     </Canvas>
   )

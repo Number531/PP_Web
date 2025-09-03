@@ -1,4 +1,5 @@
 import type React from "react"
+import type { Viewport } from "next"
 import "./globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -56,6 +57,14 @@ export const metadata = generateEnhancedSEO({
   modifiedTime: "2025-04-22T00:00:00Z",
   section: "Home"
 })
+
+// Next.js 15: move viewport and themeColor out of Metadata into a dedicated export
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#6D28D9",
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

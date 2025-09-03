@@ -20,10 +20,6 @@ const nextConfig = {
     // Enable optimizations for improved performance
     optimizeCss: true,
     optimizePackageImports: [
-      'three',
-      '@react-three/fiber',
-      '@react-three/drei',
-      '@react-three/postprocessing',
       'framer-motion',
     ],
   },
@@ -68,6 +64,19 @@ const nextConfig = {
           reuseExistingChunk: true,
         },
       },
+    }
+
+    // Ensure single module identity for 'three' to avoid WebGL context issues (notably in Safari)
+    config.resolve = config.resolve || {}
+    const path = require('path')
+    const threeEntry = require.resolve('three')
+    const postprocessingEntry = require.resolve('postprocessing')
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      // Use entry file locations and step up to package root to allow subpath imports
+      three: path.dirname(path.dirname(threeEntry)),
+      postprocessing: path.dirname(path.dirname(postprocessingEntry)),
+      'three/examples/jsm/postprocessing/Pass.js': 'postprocessing',
     }
 
     return config

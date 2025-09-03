@@ -1,15 +1,8 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*", "/css/*", "/*.js", "/*.json", "/*.ico", "/*.svg"]
+    "exclude": ["/images/*", "/css/*", "/workers/*", "/_next/*", "/*.js", "/*.json", "/*.ico", "/*.svg"]
   },
-  "routes": [
-    {
-      "route": "/*",
-      "serve": "/index.html",
-      "statusCode": 200
-    }
-  ],
   "platform": {
     "apiRuntime": "node:18"
   },

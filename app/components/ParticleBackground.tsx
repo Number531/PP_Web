@@ -3,7 +3,8 @@
 import { Suspense, useRef, useMemo, useEffect, useState } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
-import { EffectComposer, Bloom } from "@react-three/postprocessing"
+import { Bloom } from "@react-three/postprocessing"
+import { SafeComposer } from "@/app/shared/components/SafeComposer"
 import { useMobile } from "@/hooks/use-mobile"
 import * as THREE from "three"
 import { ClientOnly } from "@/app/shared/components/ClientOnly"
@@ -216,9 +217,9 @@ export function ParticleBackground() {
         >
           <Suspense fallback={null}>
             <GalaxyScene />
-            <EffectComposer>
+            <SafeComposer>
               <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} intensity={0.5} />
-            </EffectComposer>
+            </SafeComposer>
           </Suspense>
         </Canvas>
       </ClientOnly>
